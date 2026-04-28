@@ -1,19 +1,19 @@
-name: FeedBacks
+name: FeedBacks!
 options:
   deploymentTarget:
     macOS: "14.0"
 settings:
   base:
-    PRODUCT_NAME: FeedBacks
+    PRODUCT_NAME: "FeedBacks!"
     PRODUCT_BUNDLE_IDENTIFIER: com.gogolabs.feedbacks
     SWIFT_VERSION: 5.10
     DEVELOPMENT_TEAM: 4U78WUV7T6
     GENERATE_INFOPLIST_FILE: YES
-    INFOPLIST_KEY_CFBundleDisplayName: FeedBacks
+    INFOPLIST_KEY_CFBundleDisplayName: "FeedBacks!"
     INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.music
     INFOPLIST_KEY_NSHumanReadableCopyright: "Copyright © 2026 GogoLabs"
 targets:
-  FeedBacks:
+  "FeedBacks!":
     type: application
     platform: macOS
     sources:
@@ -38,7 +38,7 @@ targets:
         CURRENT_PROJECT_VERSION: 1
         MARKETING_VERSION: 0.1.0
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
-        INFOPLIST_KEY_CFBundleName: FeedBacks
+        INFOPLIST_KEY_CFBundleName: "FeedBacks!"
         INFOPLIST_KEY_NSPrincipalClass: NSApplication
     dependencies: []
     postBuildScripts:

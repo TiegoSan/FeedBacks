@@ -26,7 +26,7 @@ struct FeedBacksApp: App {
         .windowStyle(.hiddenTitleBar)
         .commands {
             CommandGroup(replacing: .appInfo) {
-                Button("About FeedBacks") {
+                Button("About FeedBacks!") {
                     appDelegate.showAboutPanel()
                 }
             }
