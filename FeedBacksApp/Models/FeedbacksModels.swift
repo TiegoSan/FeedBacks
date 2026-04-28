@@ -25,6 +25,28 @@ enum SixDigitMode: String, CaseIterable, Identifiable {
     }
 }
 
+enum AAFFrameRatePreset: String, CaseIterable, Identifiable {
+    case fps23976 = "23.976"
+    case fps24 = "24"
+    case fps25 = "25"
+    case fps2997 = "29.97"
+    case fps30 = "30"
+
+    var id: String { rawValue }
+
+    var title: String { rawValue }
+
+    var numericValue: Double {
+        switch self {
+        case .fps23976: return 23.976
+        case .fps24: return 24.0
+        case .fps25: return 25.0
+        case .fps2997: return 29.97
+        case .fps30: return 30.0
+        }
+    }
+}
+
 struct FeedbackRow: Identifiable, Hashable {
     let id = UUID()
     let lineNumber: Int
@@ -71,4 +93,16 @@ struct FeedbackImportFailure: Codable, Identifiable {
         case error
         case ruler
     }
+}
+
+struct FeedbackAAFRequest: Codable {
+    let title: String
+    let markerName: String
+    let frameRate: Double
+    let rows: [FeedbackAAFRow]
+}
+
+struct FeedbackAAFRow: Codable {
+    let timecode: String
+    let comment: String
 }

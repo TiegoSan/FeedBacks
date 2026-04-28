@@ -38,7 +38,6 @@ struct MainWindowView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 86, height: 86)
-                .overlay(Circle().stroke(FeedbacksTheme.cardBorder, lineWidth: FeedbacksTheme.cardBorderWidth))
 
             VStack(alignment: .leading, spacing: 4) {
                 Text("FeedBacks")
@@ -70,9 +69,30 @@ struct MainWindowView: View {
             .disabled(vm.isBusy || vm.rows.filter(\.include).isEmpty)
 
             Button {
+                Task { await vm.exportAAF() }
+            } label: {
+                Text("Export AAF")
+                    .font(.system(size: 14, weight: .bold, design: .rounded))
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 10)
+            }
+            .buttonStyle(GlassActionButtonStyle(fill: FeedbacksTheme.accentSoft))
+            .disabled(vm.isBusy || vm.rows.filter(\.include).isEmpty)
+
+            Button {
                 vm.chooseFile()
             } label: {
                 Text("Choose File")
+                    .font(.system(size: 14, weight: .bold, design: .rounded))
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 10)
+            }
+            .buttonStyle(GlassActionButtonStyle(fill: FeedbacksTheme.accent))
+
+            Button {
+                vm.pasteFromClipboard()
+            } label: {
+                Text("Paste from Clipboard")
                     .font(.system(size: 14, weight: .bold, design: .rounded))
                     .padding(.horizontal, 16)
                     .padding(.vertical, 10)
@@ -144,7 +164,7 @@ struct MainWindowView: View {
             if isSetupExpanded {
                 HStack(alignment: .top, spacing: 18) {
                     VStack(alignment: .leading, spacing: 8) {
-                        labeledValue("File", value: vm.selectedFileURL?.lastPathComponent ?? "No file selected")
+                        labeledValue("Source", value: vm.selectedSourceLabel)
 
                         HStack(spacing: 16) {
                             VStack(alignment: .leading, spacing: 8) {
@@ -203,6 +223,18 @@ struct MainWindowView: View {
                                 .pickerStyle(.menu)
                             }
                             .frame(maxWidth: 180, alignment: .leading)
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("AAF FPS")
+                                    .font(.system(size: 12, weight: .semibold, design: .rounded))
+                                    .foregroundStyle(FeedbacksTheme.textSecondary)
+                                Picker("", selection: $vm.aafFrameRate) {
+                                    ForEach(AAFFrameRatePreset.allCases) { preset in
+                                        Text(preset.title).tag(preset)
+                                    }
+                                }
+                                .pickerStyle(.menu)
+                            }
+                            .frame(maxWidth: 120, alignment: .leading)
                         }
 
                         VStack(spacing: 8) {

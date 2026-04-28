@@ -43,6 +43,27 @@ enum MixFeedbackParser {
         }
 
         let lines = try readLines(from: path)
+        return try parseLines(lines, defaultHour: defaultHour, sixDigitMode: sixDigitMode)
+    }
+
+    static func parseText(
+        _ text: String,
+        defaultHour: Int,
+        sixDigitMode: SixDigitMode
+    ) throws -> [FeedbackRow] {
+        guard (0...23).contains(defaultHour) else {
+            throw MixFeedbackParserError.invalidDefaultHour
+        }
+
+        let lines = text.components(separatedBy: .newlines)
+        return try parseLines(lines, defaultHour: defaultHour, sixDigitMode: sixDigitMode)
+    }
+
+    private static func parseLines(
+        _ lines: [String],
+        defaultHour: Int,
+        sixDigitMode: SixDigitMode
+    ) throws -> [FeedbackRow] {
         let regex = try NSRegularExpression(pattern: tokenPattern)
         var rows: [FeedbackRow] = []
 

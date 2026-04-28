@@ -19,6 +19,7 @@
 		ACD567FF35359B32B5EC9C82 /* MixFeedbackParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F2D9B5806B92DE294322A4 /* MixFeedbackParser.swift */; };
 		BCC6189BE04C6679E18D9831 /* BrandTypography.swift in Sources */ = {isa = PBXBuildFile; fileRef = F624CD549EFEBAB4F8D7A882 /* BrandTypography.swift */; };
 		C44B2E7435125F58647F878A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1A7908B6D227D910FD2DC4 /* AppDelegate.swift */; };
+		DB5053172D4836956204E248 /* FeedbacksAAFExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D43936C464F82784DE133C82 /* FeedbacksAAFExporter.swift */; };
 		DF50286BC7B3AB307AA7F15E /* FeedbackDocumentReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB33F915F895DC0521AA6358 /* FeedbackDocumentReader.swift */; };
 		DFF0FAC7BE9165D7E8A39FC3 /* Python in Resources */ = {isa = PBXBuildFile; fileRef = 1B8DCABB2CAC3B94FDB03B72 /* Python */; };
 		E0DE2F83C983C469BD08999D /* FeedbacksStrokeTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEAA63B984A8DFA70C08BECE /* FeedbacksStrokeTheme.swift */; };
@@ -51,6 +52,7 @@
 		BB33F915F895DC0521AA6358 /* FeedbackDocumentReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackDocumentReader.swift; sourceTree = "<group>"; };
 		BEAA63B984A8DFA70C08BECE /* FeedbacksStrokeTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbacksStrokeTheme.swift; sourceTree = "<group>"; };
 		D3BF2D5A7F651CF90F939A77 /* Color+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Hex.swift"; sourceTree = "<group>"; };
+		D43936C464F82784DE133C82 /* FeedbacksAAFExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbacksAAFExporter.swift; sourceTree = "<group>"; };
 		D817EF1C7CECB27C5BE7FEE7 /* python-minimal */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "python-minimal"; path = "FeedBacksApp/Resources/python-minimal"; sourceTree = SOURCE_ROOT; };
 		E5E2855ECFE47E48F40A83F5 /* MainWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowView.swift; sourceTree = "<group>"; };
 		F624CD549EFEBAB4F8D7A882 /* BrandTypography.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrandTypography.swift; sourceTree = "<group>"; };
@@ -61,6 +63,7 @@
 			isa = PBXGroup;
 			children = (
 				BB33F915F895DC0521AA6358 /* FeedbackDocumentReader.swift */,
+				D43936C464F82784DE133C82 /* FeedbacksAAFExporter.swift */,
 				AC83406A66C11F3F070C17E7 /* FeedbacksImporter.swift */,
 				49F2D9B5806B92DE294322A4 /* MixFeedbackParser.swift */,
 			);
@@ -272,6 +275,7 @@
 				9327795E3E3373077F2E5D9A /* FeedBacksApp.swift in Sources */,
 				67BB596A46FDCABBC2CB5608 /* FeedBacksViewModel.swift in Sources */,
 				DF50286BC7B3AB307AA7F15E /* FeedbackDocumentReader.swift in Sources */,
+				DB5053172D4836956204E248 /* FeedbacksAAFExporter.swift in Sources */,
 				3EAE729BF1125D44769BD8AA /* FeedbacksColorTheme.swift in Sources */,
 				EC42CBBB2BE0444DA2E22DE8 /* FeedbacksImporter.swift in Sources */,
 				8E2683E277048F421667EF4B /* FeedbacksModels.swift in Sources */,

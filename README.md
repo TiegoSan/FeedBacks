@@ -9,6 +9,7 @@ Current scope:
 - Lobster title font
 - main window layout for future import workflow
 - embedded Python runtime for standalone PTSL import
+- AAF export for marker-only interchange with other DAWs
 
 Build:
 
