@@ -6,6 +6,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     @Published var isLaunchSplashCompleted = false
 
     private var startupSplashPanel: NSPanel?
+    private var colorsWindow: NSWindow?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         showStartupSplashPanel()
@@ -23,6 +24,41 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         alert.messageText = "FeedBacks"
         alert.informativeText = "Standalone mix feedback marker importer for Pro Tools."
         alert.runModal()
+    }
+
+    func showColorsWindow() {
+        if colorsWindow == nil {
+            let hostingController = NSHostingController(
+                rootView: ColorsView()
+                    .frame(minWidth: 460, minHeight: 620)
+            )
+
+            let window = NSWindow(contentViewController: hostingController)
+            window.title = ""
+            window.styleMask = [.titled, .closable, .fullSizeContentView]
+            window.titleVisibility = .hidden
+            window.titlebarAppearsTransparent = true
+            window.tabbingMode = .disallowed
+            window.isReleasedWhenClosed = false
+            window.isMovableByWindowBackground = true
+            window.standardWindowButton(.miniaturizeButton)?.isHidden = true
+            window.standardWindowButton(.zoomButton)?.isHidden = true
+            colorsWindow = window
+        }
+
+        if let visibleFrame = NSScreen.main?.visibleFrame {
+            let width: CGFloat = 500
+            let frame = NSRect(
+                x: visibleFrame.minX,
+                y: visibleFrame.minY,
+                width: width,
+                height: visibleFrame.height
+            )
+            colorsWindow?.setFrame(frame, display: false)
+        }
+
+        colorsWindow?.makeKeyAndOrderFront(nil)
+        NSApp.activate(ignoringOtherApps: true)
     }
 
     private func showStartupSplashPanel() {

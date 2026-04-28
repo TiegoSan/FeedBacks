@@ -2,11 +2,16 @@ import SwiftUI
 
 struct MainWindowView: View {
     @EnvironmentObject private var appDelegate: AppDelegate
+    @ObservedObject private var colorTheme = FeedbacksColorTheme.shared
+    @ObservedObject private var strokeTheme = FeedbacksStrokeTheme.shared
     @StateObject private var vm = FeedBacksViewModel()
     @State private var isSetupExpanded = true
     @State private var isMarkerExpanded = true
 
     var body: some View {
+        let _ = colorTheme.refreshToken
+        let _ = strokeTheme.refreshToken
+
         ZStack {
             LinearGradient(
                 colors: [FeedbacksTheme.backgroundTop, FeedbacksTheme.backgroundBottom],
@@ -33,8 +38,7 @@ struct MainWindowView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 86, height: 86)
-                .background(Circle().fill(FeedbacksTheme.cardElevated.opacity(0.8)))
-                .overlay(Circle().stroke(FeedbacksTheme.border, lineWidth: 1))
+                .overlay(Circle().stroke(FeedbacksTheme.cardBorder, lineWidth: FeedbacksTheme.cardBorderWidth))
 
             VStack(alignment: .leading, spacing: 4) {
                 Text("FeedBacks")
@@ -101,10 +105,45 @@ struct MainWindowView: View {
 
     private var setupCard: some View {
         VStack(alignment: .leading, spacing: 16) {
+            HStack {
+                HStack(alignment: .firstTextBaseline, spacing: 18) {
+                    Text("Import Setup")
+                        .font(.system(size: 22, weight: .bold, design: .rounded))
+                        .foregroundStyle(FeedbacksTheme.textPrimary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    Text("Marker Settings")
+                        .font(.system(size: 22, weight: .bold, design: .rounded))
+                        .foregroundStyle(FeedbacksTheme.textPrimary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                Spacer()
+                Button {
+                    isSetupExpanded.toggle()
+                } label: {
+                    HStack(spacing: 8) {
+                        Text(isSetupExpanded ? "Collapse" : "Expand")
+                            .font(.system(size: 12, weight: .bold, design: .rounded))
+                        Image(systemName: isSetupExpanded ? "chevron.up" : "chevron.down")
+                            .font(.system(size: 11, weight: .bold))
+                    }
+                    .foregroundStyle(FeedbacksTheme.textPrimary)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
+                    .background(
+                        Capsule(style: .continuous)
+                            .fill(FeedbacksTheme.cardElevated.opacity(0.72))
+                    )
+                    .overlay(
+                        Capsule(style: .continuous)
+                            .stroke(FeedbacksTheme.buttonBorder, lineWidth: FeedbacksTheme.buttonBorderWidth)
+                    )
+                }
+                .buttonStyle(.plain)
+            }
+
             if isSetupExpanded {
                 HStack(alignment: .top, spacing: 18) {
                     VStack(alignment: .leading, spacing: 8) {
-                        sectionTitle("Import Setup")
                         labeledValue("File", value: vm.selectedFileURL?.lastPathComponent ?? "No file selected")
 
                         HStack(spacing: 16) {
@@ -150,8 +189,6 @@ struct MainWindowView: View {
                     .frame(maxWidth: .infinity, alignment: .topLeading)
 
                     VStack(alignment: .leading, spacing: 8) {
-                        sectionTitle("Marker Settings")
-
                         HStack(alignment: .top, spacing: 16) {
                             labeledField("Marker Name", text: $vm.markerName)
                             VStack(alignment: .leading, spacing: 8) {
@@ -172,24 +209,7 @@ struct MainWindowView: View {
                             Text("Color")
                                 .font(.system(size: 12, weight: .semibold, design: .rounded))
                                 .foregroundStyle(FeedbacksTheme.textSecondary)
-                            let colors: [Color] = [
-                                Color(red: 111/255, green: 52/255, blue: 238/255),    // 1 Violet
-                                Color(red: 148/255, green: 47/255, blue: 219/255),    // 2 Violet magenta
-                                Color(red: 228/255, green: 101/255, blue: 196/255),   // 3 Rose
-                                Color(red: 248/255, green: 54/255, blue: 146/255),    // 4 Magenta
-                                Color(red: 247/255, green: 30/255, blue: 16/255),     // 5 Rouge
-                                Color(red: 255/255, green: 110/255, blue: 39/255),    // 6 Orange
-                                Color(red: 248/255, green: 173/255, blue: 24/255),    // 7 Orange jaune
-                                Color(red: 234/255, green: 229/255, blue: 0/255),     // 8 Jaune
-                                Color(red: 182/255, green: 230/255, blue: 75/255),    // 9 Vert
-                                Color(red: 77/255, green: 255/255, blue: 77/255),     // 10 Vert fluo
-                                Color(red: 77/255, green: 255/255, blue: 225/255),    // 11 Cyan
-                                Color(red: 77/255, green: 184/255, blue: 255/255),    // 12 Bleu clair
-                                Color(red: 77/255, green: 106/255, blue: 255/255),    // 13 Bleu
-                                Color.white,                                          // 14 Blanc
-                                Color(red: 182/255, green: 182/255, blue: 182/255),   // 15 Gris
-                                Color(red: 34/255, green: 34/255, blue: 34/255)       // 16 Noir
-                            ]
+                            let colors = FeedbacksTheme.markerColors
                             HStack(spacing: 16) {
                                 VStack(spacing: 8) {
                                     HStack(spacing: 8) {
@@ -262,8 +282,12 @@ struct MainWindowView: View {
                         .padding(.horizontal, 10)
                         .padding(.vertical, 8)
                         .background(
-                            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                            RoundedRectangle(cornerRadius: FeedbacksTheme.rowCornerRadius, style: .continuous)
                                 .fill(FeedbacksTheme.cardElevated.opacity(0.72))
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: FeedbacksTheme.rowCornerRadius, style: .continuous)
+                                .stroke(FeedbacksTheme.rowBorder, lineWidth: FeedbacksTheme.rowBorderWidth)
                         )
                     }
                 }
@@ -362,7 +386,7 @@ struct MainWindowView: View {
                 )
                 .overlay(
                     Capsule(style: .continuous)
-                        .stroke(FeedbacksTheme.border, lineWidth: 1)
+                        .stroke(FeedbacksTheme.buttonBorder, lineWidth: FeedbacksTheme.buttonBorderWidth)
                 )
             }
             .buttonStyle(.plain)
@@ -377,12 +401,12 @@ private struct GlassActionButtonStyle: ButtonStyle {
         configuration.label
             .foregroundStyle(.white.opacity(configuration.isPressed ? 0.85 : 0.98))
             .background(
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                RoundedRectangle(cornerRadius: FeedbacksTheme.buttonCornerRadius, style: .continuous)
                     .fill(fill.opacity(configuration.isPressed ? 0.72 : 0.94))
             )
             .overlay(
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .stroke(FeedbacksTheme.border, lineWidth: 1)
+                RoundedRectangle(cornerRadius: FeedbacksTheme.buttonCornerRadius, style: .continuous)
+                    .stroke(FeedbacksTheme.buttonBorder, lineWidth: FeedbacksTheme.buttonBorderWidth)
             )
             .scaleEffect(configuration.isPressed ? 0.99 : 1)
     }
@@ -393,12 +417,12 @@ private extension View {
         self
             .padding(22)
             .background(
-                RoundedRectangle(cornerRadius: 28, style: .continuous)
+                RoundedRectangle(cornerRadius: FeedbacksTheme.cardCornerRadius, style: .continuous)
                     .fill(FeedbacksTheme.card.opacity(0.9))
             )
             .overlay(
-                RoundedRectangle(cornerRadius: 28, style: .continuous)
-                    .stroke(FeedbacksTheme.border, lineWidth: 1)
+                RoundedRectangle(cornerRadius: FeedbacksTheme.cardCornerRadius, style: .continuous)
+                    .stroke(FeedbacksTheme.cardBorder, lineWidth: FeedbacksTheme.cardBorderWidth)
             )
     }
 }

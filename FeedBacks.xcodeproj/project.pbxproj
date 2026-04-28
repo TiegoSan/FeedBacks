@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1B09B25EFCBBC444D3AB2FE6 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D284192975FB638EFF8C3E5 /* SplashView.swift */; };
 		283E5F81ECEF23961E9D1CB4 /* python-minimal in Resources */ = {isa = PBXBuildFile; fileRef = D817EF1C7CECB27C5BE7FEE7 /* python-minimal */; };
+		3EAE729BF1125D44769BD8AA /* FeedbacksColorTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA6069B83D44B00572C8D533 /* FeedbacksColorTheme.swift */; };
 		3F41DEB2D6AA1FD036BB586D /* Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BF2D5A7F651CF90F939A77 /* Color+Hex.swift */; };
 		58B342A1BF753E0388FACA98 /* FontRegistrar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B318B5DDC587EE492481F731 /* FontRegistrar.swift */; };
 		67BB596A46FDCABBC2CB5608 /* FeedBacksViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFF2BF83A99AAA3998F04C2 /* FeedBacksViewModel.swift */; };
@@ -20,9 +21,11 @@
 		C44B2E7435125F58647F878A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1A7908B6D227D910FD2DC4 /* AppDelegate.swift */; };
 		DF50286BC7B3AB307AA7F15E /* FeedbackDocumentReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB33F915F895DC0521AA6358 /* FeedbackDocumentReader.swift */; };
 		DFF0FAC7BE9165D7E8A39FC3 /* Python in Resources */ = {isa = PBXBuildFile; fileRef = 1B8DCABB2CAC3B94FDB03B72 /* Python */; };
+		E0DE2F83C983C469BD08999D /* FeedbacksStrokeTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEAA63B984A8DFA70C08BECE /* FeedbacksStrokeTheme.swift */; };
 		EC42CBBB2BE0444DA2E22DE8 /* FeedbacksImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC83406A66C11F3F070C17E7 /* FeedbacksImporter.swift */; };
 		F4176661B6013FBB9F7EE745 /* Lobster-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7D3F25104B761A7AA7BB70B5 /* Lobster-Regular.ttf */; };
 		F5525227136F71D438FA4E70 /* FeedbacksTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 863338835E4EC6D19914EACE /* FeedbacksTheme.swift */; };
+		F8FFD269EBCF57E958304169 /* ColorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66DAC9FFB4B2FD815F75F1C3 /* ColorsView.swift */; };
 		F96F494B45675665F3659E6D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 57025CA75785FB70EA4D621B /* Assets.xcassets */; };
 		FEF0B329CC6089FB23727308 /* ColorButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E30C9E95C8C8BB0972DD8E /* ColorButton.swift */; };
 /* End PBXBuildFile section */
@@ -34,6 +37,7 @@
 		49F2D9B5806B92DE294322A4 /* MixFeedbackParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixFeedbackParser.swift; sourceTree = "<group>"; };
 		57025CA75785FB70EA4D621B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		669125ED953D68A06E72C6E3 /* FeedbacksModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbacksModels.swift; sourceTree = "<group>"; };
+		66DAC9FFB4B2FD815F75F1C3 /* ColorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorsView.swift; sourceTree = "<group>"; };
 		6D284192975FB638EFF8C3E5 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		6DFF2BF83A99AAA3998F04C2 /* FeedBacksViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedBacksViewModel.swift; sourceTree = "<group>"; };
 		7D3F25104B761A7AA7BB70B5 /* Lobster-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lobster-Regular.ttf"; sourceTree = "<group>"; };
@@ -41,9 +45,11 @@
 		863338835E4EC6D19914EACE /* FeedbacksTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbacksTheme.swift; sourceTree = "<group>"; };
 		95E30C9E95C8C8BB0972DD8E /* ColorButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorButton.swift; sourceTree = "<group>"; };
 		A8606F2567D8A766B5AC4EDA /* FeedBacks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FeedBacks.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA6069B83D44B00572C8D533 /* FeedbacksColorTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbacksColorTheme.swift; sourceTree = "<group>"; };
 		AC83406A66C11F3F070C17E7 /* FeedbacksImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbacksImporter.swift; sourceTree = "<group>"; };
 		B318B5DDC587EE492481F731 /* FontRegistrar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontRegistrar.swift; sourceTree = "<group>"; };
 		BB33F915F895DC0521AA6358 /* FeedbackDocumentReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackDocumentReader.swift; sourceTree = "<group>"; };
+		BEAA63B984A8DFA70C08BECE /* FeedbacksStrokeTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbacksStrokeTheme.swift; sourceTree = "<group>"; };
 		D3BF2D5A7F651CF90F939A77 /* Color+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Hex.swift"; sourceTree = "<group>"; };
 		D817EF1C7CECB27C5BE7FEE7 /* python-minimal */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "python-minimal"; path = "FeedBacksApp/Resources/python-minimal"; sourceTree = SOURCE_ROOT; };
 		E5E2855ECFE47E48F40A83F5 /* MainWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowView.swift; sourceTree = "<group>"; };
@@ -74,6 +80,7 @@
 			isa = PBXGroup;
 			children = (
 				95E30C9E95C8C8BB0972DD8E /* ColorButton.swift */,
+				66DAC9FFB4B2FD815F75F1C3 /* ColorsView.swift */,
 				E5E2855ECFE47E48F40A83F5 /* MainWindowView.swift */,
 				6D284192975FB638EFF8C3E5 /* SplashView.swift */,
 			);
@@ -130,6 +137,8 @@
 			children = (
 				F624CD549EFEBAB4F8D7A882 /* BrandTypography.swift */,
 				D3BF2D5A7F651CF90F939A77 /* Color+Hex.swift */,
+				AA6069B83D44B00572C8D533 /* FeedbacksColorTheme.swift */,
+				BEAA63B984A8DFA70C08BECE /* FeedbacksStrokeTheme.swift */,
 				863338835E4EC6D19914EACE /* FeedbacksTheme.swift */,
 				B318B5DDC587EE492481F731 /* FontRegistrar.swift */,
 			);
@@ -259,11 +268,14 @@
 				BCC6189BE04C6679E18D9831 /* BrandTypography.swift in Sources */,
 				3F41DEB2D6AA1FD036BB586D /* Color+Hex.swift in Sources */,
 				FEF0B329CC6089FB23727308 /* ColorButton.swift in Sources */,
+				F8FFD269EBCF57E958304169 /* ColorsView.swift in Sources */,
 				9327795E3E3373077F2E5D9A /* FeedBacksApp.swift in Sources */,
 				67BB596A46FDCABBC2CB5608 /* FeedBacksViewModel.swift in Sources */,
 				DF50286BC7B3AB307AA7F15E /* FeedbackDocumentReader.swift in Sources */,
+				3EAE729BF1125D44769BD8AA /* FeedbacksColorTheme.swift in Sources */,
 				EC42CBBB2BE0444DA2E22DE8 /* FeedbacksImporter.swift in Sources */,
 				8E2683E277048F421667EF4B /* FeedbacksModels.swift in Sources */,
+				E0DE2F83C983C469BD08999D /* FeedbacksStrokeTheme.swift in Sources */,
 				F5525227136F71D438FA4E70 /* FeedbacksTheme.swift in Sources */,
 				58B342A1BF753E0388FACA98 /* FontRegistrar.swift in Sources */,
 				89BCD2B12530CB84B999A23A /* MainWindowView.swift in Sources */,

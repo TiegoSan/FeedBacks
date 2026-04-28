@@ -1,7 +1,11 @@
 import SwiftUI
 
 struct SplashView: View {
+    @ObservedObject private var colorTheme = FeedbacksColorTheme.shared
+
     var body: some View {
+        let _ = colorTheme.refreshToken
+
         ZStack {
             RadialGradient(
                 colors: [

@@ -30,6 +30,14 @@ struct FeedBacksApp: App {
                     appDelegate.showAboutPanel()
                 }
             }
+
+            CommandGroup(after: .toolbar) {
+                Divider()
+                Button("Colors") {
+                    appDelegate.showColorsWindow()
+                }
+                .keyboardShortcut("c", modifiers: [.command, .shift])
+            }
         }
     }
 }

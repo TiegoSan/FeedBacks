@@ -25,4 +25,22 @@ extension Color {
             opacity: Double(a) / 255
         )
     }
+
+    var hexRGB: String? {
+        guard let rgbColor = NSColor(self).usingColorSpace(.sRGB) else { return nil }
+        let red = Int(round(rgbColor.redComponent * 255))
+        let green = Int(round(rgbColor.greenComponent * 255))
+        let blue = Int(round(rgbColor.blueComponent * 255))
+        return String(format: "%02X%02X%02X", red, green, blue)
+    }
+
+    var hsbComponents: (h: Double, s: Double, b: Double)? {
+        guard let color = NSColor(self).usingColorSpace(.sRGB) else { return nil }
+        var hue: CGFloat = 0
+        var saturation: CGFloat = 0
+        var brightness: CGFloat = 0
+        var alpha: CGFloat = 0
+        color.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
+        return (Double(hue), Double(saturation), Double(brightness))
+    }
 }
