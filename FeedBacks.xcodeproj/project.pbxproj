@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 63;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -24,6 +24,7 @@
 		F4176661B6013FBB9F7EE745 /* Lobster-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7D3F25104B761A7AA7BB70B5 /* Lobster-Regular.ttf */; };
 		F5525227136F71D438FA4E70 /* FeedbacksTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 863338835E4EC6D19914EACE /* FeedbacksTheme.swift */; };
 		F96F494B45675665F3659E6D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 57025CA75785FB70EA4D621B /* Assets.xcassets */; };
+		FEF0B329CC6089FB23727308 /* ColorButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95E30C9E95C8C8BB0972DD8E /* ColorButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		7D3F25104B761A7AA7BB70B5 /* Lobster-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lobster-Regular.ttf"; sourceTree = "<group>"; };
 		7F1A7908B6D227D910FD2DC4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		863338835E4EC6D19914EACE /* FeedbacksTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbacksTheme.swift; sourceTree = "<group>"; };
+		95E30C9E95C8C8BB0972DD8E /* ColorButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorButton.swift; sourceTree = "<group>"; };
 		A8606F2567D8A766B5AC4EDA /* FeedBacks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FeedBacks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC83406A66C11F3F070C17E7 /* FeedbacksImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbacksImporter.swift; sourceTree = "<group>"; };
 		B318B5DDC587EE492481F731 /* FontRegistrar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontRegistrar.swift; sourceTree = "<group>"; };
@@ -71,6 +73,7 @@
 		2DDF3B3CFFAA4218DD32CFEB /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				95E30C9E95C8C8BB0972DD8E /* ColorButton.swift */,
 				E5E2855ECFE47E48F40A83F5 /* MainWindowView.swift */,
 				6D284192975FB638EFF8C3E5 /* SplashView.swift */,
 			);
@@ -203,6 +206,7 @@
 			);
 			mainGroup = 9376319D8D8CA43995031F77;
 			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -254,6 +258,7 @@
 				C44B2E7435125F58647F878A /* AppDelegate.swift in Sources */,
 				BCC6189BE04C6679E18D9831 /* BrandTypography.swift in Sources */,
 				3F41DEB2D6AA1FD036BB586D /* Color+Hex.swift in Sources */,
+				FEF0B329CC6089FB23727308 /* ColorButton.swift in Sources */,
 				9327795E3E3373077F2E5D9A /* FeedBacksApp.swift in Sources */,
 				67BB596A46FDCABBC2CB5608 /* FeedBacksViewModel.swift in Sources */,
 				DF50286BC7B3AB307AA7F15E /* FeedbackDocumentReader.swift in Sources */,
@@ -342,7 +347,6 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_KEY_CFBundleName = FeedBacks;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -432,7 +436,6 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_KEY_CFBundleName = FeedBacks;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

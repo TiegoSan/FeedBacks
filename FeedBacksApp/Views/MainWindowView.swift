@@ -10,8 +10,8 @@ struct MainWindowView: View {
         ZStack {
             LinearGradient(
                 colors: [FeedbacksTheme.backgroundTop, FeedbacksTheme.backgroundBottom],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
+                startPoint: .top,
+                endPoint: .bottom
             )
             .ignoresSafeArea()
 
@@ -48,6 +48,24 @@ struct MainWindowView: View {
             Spacer()
 
             Button {
+                Task { await vm.importMarkers() }
+            } label: {
+                HStack(spacing: 10) {
+                    if vm.isBusy {
+                        ProgressView()
+                            .controlSize(.small)
+                            .tint(.white)
+                    }
+                    Text(vm.isBusy ? "Importing..." : "Import Markers into Pro Tools")
+                        .font(.system(size: 14, weight: .bold, design: .rounded))
+                }
+                .padding(.horizontal, 16)
+                .padding(.vertical, 10)
+            }
+            .buttonStyle(GlassActionButtonStyle(fill: FeedbacksTheme.accentWarm))
+            .disabled(vm.isBusy || vm.rows.filter(\.include).isEmpty)
+
+            Button {
                 vm.chooseFile()
             } label: {
                 Text("Choose File")
@@ -56,14 +74,21 @@ struct MainWindowView: View {
                     .padding(.vertical, 10)
             }
             .buttonStyle(GlassActionButtonStyle(fill: FeedbacksTheme.accent))
+
+            Button {
+                vm.parseSelectedFile()
+            } label: {
+                Text("Parse Feedback File")
+                    .font(.system(size: 14, weight: .bold, design: .rounded))
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 10)
+            }
+            .buttonStyle(GlassActionButtonStyle(fill: FeedbacksTheme.accentSoft))
         }
     }
 
     private var controls: some View {
-        HStack(alignment: .top, spacing: 18) {
-            setupCard
-            importCard
-        }
+        setupCard
         .animation(.spring(response: 0.28, dampingFraction: 0.9), value: isSetupExpanded)
         .animation(.spring(response: 0.28, dampingFraction: 0.9), value: isMarkerExpanded)
         .onChange(of: vm.rows.isEmpty) { _, isEmpty in
@@ -76,116 +101,126 @@ struct MainWindowView: View {
 
     private var setupCard: some View {
         VStack(alignment: .leading, spacing: 16) {
-            cardHeader(title: "Import Setup", isExpanded: $isSetupExpanded)
-
             if isSetupExpanded {
-                labeledValue("File", value: vm.selectedFileURL?.lastPathComponent ?? "No file selected")
-
-                HStack(spacing: 16) {
+                HStack(alignment: .top, spacing: 18) {
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("Default Hour")
-                            .font(.system(size: 12, weight: .semibold, design: .rounded))
-                            .foregroundStyle(FeedbacksTheme.textSecondary)
-                        Stepper(value: $vm.defaultHour, in: 0...23) {
-                            Text(String(format: "%02d", vm.defaultHour))
-                                .font(.system(size: 15, weight: .bold, design: .monospaced))
+                        sectionTitle("Import Setup")
+                        labeledValue("File", value: vm.selectedFileURL?.lastPathComponent ?? "No file selected")
+
+                        HStack(spacing: 16) {
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("Default Hour")
+                                    .font(.system(size: 12, weight: .semibold, design: .rounded))
+                                    .foregroundStyle(FeedbacksTheme.textSecondary)
+                                Stepper(value: $vm.defaultHour, in: 0...23) {
+                                    Text(String(format: "%02d", vm.defaultHour))
+                                        .font(.system(size: 15, weight: .bold, design: .monospaced))
+                                        .foregroundStyle(FeedbacksTheme.textPrimary)
+                                }
+                                .onChange(of: vm.defaultHour) { _, _ in
+                                    if vm.selectedFileURL != nil { vm.parseSelectedFile() }
+                                }
+                            }
+
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("Compact 6-digit mode")
+                                    .font(.system(size: 12, weight: .semibold, design: .rounded))
+                                    .foregroundStyle(FeedbacksTheme.textSecondary)
+                                Picker("", selection: $vm.sixDigitMode) {
+                                    ForEach(SixDigitMode.allCases) { mode in
+                                        Text("\(mode.title) (\(mode.subtitle))").tag(mode)
+                                    }
+                                }
+                                .pickerStyle(.segmented)
+                                .onChange(of: vm.sixDigitMode) { _, _ in
+                                    if vm.selectedFileURL != nil { vm.parseSelectedFile() }
+                                }
+                            }
+                        }
+
+                        VStack(alignment: .leading, spacing: 6) {
+                            Text("Example: `123456` -> \(compactSixDigitExample)")
+                                .font(.system(size: 12, weight: .medium, design: .monospaced))
                                 .foregroundStyle(FeedbacksTheme.textPrimary)
-                        }
-                        .onChange(of: vm.defaultHour) { _, _ in
-                            if vm.selectedFileURL != nil { vm.parseSelectedFile() }
+                            Text("This only affects compact 6-digit tokens like `123456`, not segmented values like `12:34:56`.")
+                                .font(.system(size: 11, weight: .medium, design: .rounded))
+                                .foregroundStyle(FeedbacksTheme.textSecondary)
                         }
                     }
+                    .frame(maxWidth: .infinity, alignment: .topLeading)
 
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("Compact 6-digit mode")
-                            .font(.system(size: 12, weight: .semibold, design: .rounded))
-                            .foregroundStyle(FeedbacksTheme.textSecondary)
-                        Picker("", selection: $vm.sixDigitMode) {
-                            ForEach(SixDigitMode.allCases) { mode in
-                                Text("\(mode.title) (\(mode.subtitle))").tag(mode)
+                        sectionTitle("Marker Settings")
+
+                        HStack(alignment: .top, spacing: 16) {
+                            labeledField("Marker Name", text: $vm.markerName)
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("Ruler Name")
+                                    .font(.system(size: 12, weight: .semibold, design: .rounded))
+                                    .foregroundStyle(FeedbacksTheme.textSecondary)
+                                Picker("", selection: $vm.rulerName) {
+                                    ForEach(["Markers 1", "Markers 2", "Markers 3", "Markers 4", "Markers 5"], id: \.self) { name in
+                                        Text(name).tag(name)
+                                    }
+                                }
+                                .pickerStyle(.menu)
+                            }
+                            .frame(maxWidth: 180, alignment: .leading)
+                        }
+
+                        VStack(spacing: 8) {
+                            Text("Color")
+                                .font(.system(size: 12, weight: .semibold, design: .rounded))
+                                .foregroundStyle(FeedbacksTheme.textSecondary)
+                            let colors: [Color] = [
+                                Color(red: 111/255, green: 52/255, blue: 238/255),    // 1 Violet
+                                Color(red: 148/255, green: 47/255, blue: 219/255),    // 2 Violet magenta
+                                Color(red: 228/255, green: 101/255, blue: 196/255),   // 3 Rose
+                                Color(red: 248/255, green: 54/255, blue: 146/255),    // 4 Magenta
+                                Color(red: 247/255, green: 30/255, blue: 16/255),     // 5 Rouge
+                                Color(red: 255/255, green: 110/255, blue: 39/255),    // 6 Orange
+                                Color(red: 248/255, green: 173/255, blue: 24/255),    // 7 Orange jaune
+                                Color(red: 234/255, green: 229/255, blue: 0/255),     // 8 Jaune
+                                Color(red: 182/255, green: 230/255, blue: 75/255),    // 9 Vert
+                                Color(red: 77/255, green: 255/255, blue: 77/255),     // 10 Vert fluo
+                                Color(red: 77/255, green: 255/255, blue: 225/255),    // 11 Cyan
+                                Color(red: 77/255, green: 184/255, blue: 255/255),    // 12 Bleu clair
+                                Color(red: 77/255, green: 106/255, blue: 255/255),    // 13 Bleu
+                                Color.white,                                          // 14 Blanc
+                                Color(red: 182/255, green: 182/255, blue: 182/255),   // 15 Gris
+                                Color(red: 34/255, green: 34/255, blue: 34/255)       // 16 Noir
+                            ]
+                            HStack(spacing: 16) {
+                                VStack(spacing: 8) {
+                                    HStack(spacing: 8) {
+                                        ForEach(0..<8, id: \.self) { i in
+                                            ColorButton(color: colors[i], isSelected: vm.colorIndex == i + 1) {
+                                                vm.colorIndex = i + 1
+                                            }
+                                        }
+                                    }
+                                    HStack(spacing: 8) {
+                                        ForEach(8..<16, id: \.self) { i in
+                                            ColorButton(color: colors[i], isSelected: vm.colorIndex == i + 1) {
+                                                vm.colorIndex = i + 1
+                                            }
+                                        }
+                                    }
+                                }
+
+                                VStack(alignment: .leading, spacing: 8) {
+                                    Text("Selection")
+                                        .font(.system(size: 12, weight: .semibold, design: .rounded))
+                                        .foregroundStyle(FeedbacksTheme.textSecondary)
+                                    Text("\(vm.rows.filter(\.include).count) row(s) selected")
+                                        .font(.system(size: 14, weight: .bold, design: .rounded))
+                                        .foregroundStyle(FeedbacksTheme.textPrimary)
+                                }
                             }
                         }
-                        .pickerStyle(.segmented)
-                        .onChange(of: vm.sixDigitMode) { _, _ in
-                            if vm.selectedFileURL != nil { vm.parseSelectedFile() }
-                        }
                     }
+                    .frame(maxWidth: .infinity, alignment: .topLeading)
                 }
-
-                VStack(alignment: .leading, spacing: 6) {
-                    Text("Example: `123456` -> \(compactSixDigitExample)")
-                        .font(.system(size: 12, weight: .medium, design: .monospaced))
-                        .foregroundStyle(FeedbacksTheme.textPrimary)
-                    Text("This only affects compact 6-digit tokens like `123456`, not segmented values like `12:34:56`.")
-                        .font(.system(size: 11, weight: .medium, design: .rounded))
-                        .foregroundStyle(FeedbacksTheme.textSecondary)
-                }
-
-                Button {
-                    vm.parseSelectedFile()
-                } label: {
-                    Text("Parse Feedback File")
-                        .font(.system(size: 14, weight: .bold, design: .rounded))
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 10)
-                }
-                .buttonStyle(GlassActionButtonStyle(fill: FeedbacksTheme.accentSoft))
-            }
-        }
-        .frame(maxWidth: .infinity, alignment: .topLeading)
-        .glassCard()
-    }
-
-    private var importCard: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            cardHeader(title: "Marker Settings", isExpanded: $isMarkerExpanded)
-
-            if isMarkerExpanded {
-                Group {
-                    labeledField("Marker Name", text: $vm.markerName)
-                    labeledField("Ruler Name", text: $vm.rulerName)
-                }
-
-                HStack(spacing: 16) {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Color")
-                            .font(.system(size: 12, weight: .semibold, design: .rounded))
-                            .foregroundStyle(FeedbacksTheme.textSecondary)
-                        Picker("", selection: $vm.colorIndex) {
-                            ForEach(1...16, id: \.self) { index in
-                                Text("Color \(index)").tag(index)
-                            }
-                        }
-                        .pickerStyle(.menu)
-                    }
-
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Selection")
-                            .font(.system(size: 12, weight: .semibold, design: .rounded))
-                            .foregroundStyle(FeedbacksTheme.textSecondary)
-                        Text("\(vm.rows.filter(\.include).count) row(s) selected")
-                            .font(.system(size: 14, weight: .bold, design: .rounded))
-                            .foregroundStyle(FeedbacksTheme.textPrimary)
-                    }
-                }
-
-                Button {
-                    Task { await vm.importMarkers() }
-                } label: {
-                    HStack {
-                        if vm.isBusy {
-                            ProgressView()
-                                .controlSize(.small)
-                                .tint(.white)
-                        }
-                        Text(vm.isBusy ? "Importing..." : "Import Markers into Pro Tools")
-                            .font(.system(size: 14, weight: .bold, design: .rounded))
-                            .frame(maxWidth: .infinity)
-                    }
-                    .padding(.vertical, 10)
-                }
-                .buttonStyle(GlassActionButtonStyle(fill: FeedbacksTheme.accentWarm))
-                .disabled(vm.isBusy || vm.rows.filter(\.include).isEmpty)
             }
         }
         .frame(maxWidth: .infinity, alignment: .topLeading)
