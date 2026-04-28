@@ -1,0 +1,14 @@
+/Users/gautier/GogoLabs/FeedBacks/FeedBacksApp/App/AppDelegate.swift
+/Users/gautier/GogoLabs/FeedBacks/FeedBacksApp/Theme/BrandTypography.swift
+/Users/gautier/GogoLabs/FeedBacks/FeedBacksApp/Theme/Color+Hex.swift
+/Users/gautier/GogoLabs/FeedBacks/FeedBacksApp/App/FeedBacksApp.swift
+/Users/gautier/GogoLabs/FeedBacks/FeedBacksApp/ViewModels/FeedBacksViewModel.swift
+/Users/gautier/GogoLabs/FeedBacks/FeedBacksApp/Services/FeedbackDocumentReader.swift
+/Users/gautier/GogoLabs/FeedBacks/FeedBacksApp/Services/FeedbacksImporter.swift
+/Users/gautier/GogoLabs/FeedBacks/FeedBacksApp/Models/FeedbacksModels.swift
+/Users/gautier/GogoLabs/FeedBacks/FeedBacksApp/Theme/FeedbacksTheme.swift
+/Users/gautier/GogoLabs/FeedBacks/FeedBacksApp/Theme/FontRegistrar.swift
+/Users/gautier/GogoLabs/FeedBacks/FeedBacksApp/Views/MainWindowView.swift
+/Users/gautier/GogoLabs/FeedBacks/FeedBacksApp/Services/MixFeedbackParser.swift
+/Users/gautier/GogoLabs/FeedBacks/FeedBacksApp/Views/SplashView.swift
+/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/DerivedSources/GeneratedAssetSymbols.swift

@@ -1,0 +1,46 @@
+name: FeedBacks
+options:
+  deploymentTarget:
+    macOS: "14.0"
+settings:
+  base:
+    PRODUCT_NAME: FeedBacks
+    PRODUCT_BUNDLE_IDENTIFIER: com.gogolabs.feedbacks
+    SWIFT_VERSION: 5.10
+    DEVELOPMENT_TEAM: 4U78WUV7T6
+    GENERATE_INFOPLIST_FILE: YES
+    INFOPLIST_KEY_CFBundleDisplayName: FeedBacks
+    INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.music
+    INFOPLIST_KEY_NSHumanReadableCopyright: "Copyright © 2026 GogoLabs"
+targets:
+  FeedBacks:
+    type: application
+    platform: macOS
+    sources:
+      - path: FeedBacksApp
+        excludes:
+          - Resources/**
+      - path: FeedBacksApp/Resources/Assets.xcassets
+        buildPhase: resources
+      - path: FeedBacksApp/Resources/Fonts
+        buildPhase: resources
+      - path: FeedBacksApp/Resources/Python
+        buildPhase: resources
+        type: folder
+      - path: FeedBacksApp/Resources/python-minimal
+        buildPhase: resources
+        type: folder
+    settings:
+      base:
+        CODE_SIGN_STYLE: Automatic
+        CODE_SIGN_ENTITLEMENTS: FeedBacksApp/FeedBacks.entitlements
+        CODE_SIGN_IDENTITY: Apple Development
+        CURRENT_PROJECT_VERSION: 1
+        MARKETING_VERSION: 0.1.0
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        INFOPLIST_KEY_CFBundleName: FeedBacks
+        INFOPLIST_KEY_NSPrincipalClass: NSApplication
+    dependencies: []
+    postBuildScripts:
+      - name: Sign Embedded Python
+        path: scripts/sign_embedded_python.sh

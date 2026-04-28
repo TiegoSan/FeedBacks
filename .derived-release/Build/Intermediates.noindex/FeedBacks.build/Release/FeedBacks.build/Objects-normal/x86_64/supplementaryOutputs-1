@@ -1,0 +1,12 @@
+{
+  "/Users/gautier/GogoLabs/FeedBacks/FeedBacksApp/App/AppDelegate.swift" : {
+    "abi-baseline-json" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/FeedBacks.abi.json",
+    "const-values" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/FeedBacks-primary.swiftconstvalues",
+    "dependencies" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/FeedBacks-primary.d",
+    "diagnostics" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/FeedBacks-primary.dia",
+    "objc-header" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/FeedBacks-Swift.h",
+    "swiftdoc" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/FeedBacks.swiftdoc",
+    "swiftmodule" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/FeedBacks.swiftmodule",
+    "swiftsourceinfo" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/FeedBacks.swiftsourceinfo"
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "" : {
+    "const-values" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/FeedBacks-primary.swiftconstvalues",
+    "dependencies" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/FeedBacks-primary.d",
+    "diagnostics" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/FeedBacks-primary.dia",
+    "emit-module-dependencies" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/FeedBacks-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/FeedBacks-primary-emit-module.dia",
+    "pch" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/FeedBacks-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/FeedBacks-primary.swiftdeps"
+  },
+  "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "index-unit-output-path" : "/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/GeneratedAssetSymbols.o",
+    "llvm-bc" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/GeneratedAssetSymbols.bc",
+    "object" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/GeneratedAssetSymbols.o"
+  },
+  "/Users/gautier/GogoLabs/FeedBacks/FeedBacksApp/App/AppDelegate.swift" : {
+    "index-unit-output-path" : "/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/AppDelegate.o",
+    "llvm-bc" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/AppDelegate.bc",
+    "object" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/AppDelegate.o"
+  },
+  "/Users/gautier/GogoLabs/FeedBacks/FeedBacksApp/App/FeedBacksApp.swift" : {
+    "index-unit-output-path" : "/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/FeedBacksApp.o",
+    "llvm-bc" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/FeedBacksApp.bc",
+    "object" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/FeedBacksApp.o"
+  },
+  "/Users/gautier/GogoLabs/FeedBacks/FeedBacksApp/Models/FeedbacksModels.swift" : {
+    "index-unit-output-path" : "/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/FeedbacksModels.o",
+    "llvm-bc" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/FeedbacksModels.bc",
+    "object" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/FeedbacksModels.o"
+  },
+  "/Users/gautier/GogoLabs/FeedBacks/FeedBacksApp/Services/FeedbackDocumentReader.swift" : {
+    "index-unit-output-path" : "/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/FeedbackDocumentReader.o",
+    "llvm-bc" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/FeedbackDocumentReader.bc",
+    "object" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/FeedbackDocumentReader.o"
+  },
+  "/Users/gautier/GogoLabs/FeedBacks/FeedBacksApp/Services/FeedbacksImporter.swift" : {
+    "index-unit-output-path" : "/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/FeedbacksImporter.o",
+    "llvm-bc" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/FeedbacksImporter.bc",
+    "object" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/FeedbacksImporter.o"
+  },
+  "/Users/gautier/GogoLabs/FeedBacks/FeedBacksApp/Services/MixFeedbackParser.swift" : {
+    "index-unit-output-path" : "/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/MixFeedbackParser.o",
+    "llvm-bc" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/MixFeedbackParser.bc",
+    "object" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/MixFeedbackParser.o"
+  },
+  "/Users/gautier/GogoLabs/FeedBacks/FeedBacksApp/Theme/BrandTypography.swift" : {
+    "index-unit-output-path" : "/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/BrandTypography.o",
+    "llvm-bc" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/BrandTypography.bc",
+    "object" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/BrandTypography.o"
+  },
+  "/Users/gautier/GogoLabs/FeedBacks/FeedBacksApp/Theme/Color+Hex.swift" : {
+    "index-unit-output-path" : "/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/Color+Hex.o",
+    "llvm-bc" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/Color+Hex.bc",
+    "object" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/Color+Hex.o"
+  },
+  "/Users/gautier/GogoLabs/FeedBacks/FeedBacksApp/Theme/FeedbacksTheme.swift" : {
+    "index-unit-output-path" : "/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/FeedbacksTheme.o",
+    "llvm-bc" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/FeedbacksTheme.bc",
+    "object" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/FeedbacksTheme.o"
+  },
+  "/Users/gautier/GogoLabs/FeedBacks/FeedBacksApp/Theme/FontRegistrar.swift" : {
+    "index-unit-output-path" : "/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/FontRegistrar.o",
+    "llvm-bc" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/FontRegistrar.bc",
+    "object" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/FontRegistrar.o"
+  },
+  "/Users/gautier/GogoLabs/FeedBacks/FeedBacksApp/ViewModels/FeedBacksViewModel.swift" : {
+    "index-unit-output-path" : "/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/FeedBacksViewModel.o",
+    "llvm-bc" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/FeedBacksViewModel.bc",
+    "object" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/FeedBacksViewModel.o"
+  },
+  "/Users/gautier/GogoLabs/FeedBacks/FeedBacksApp/Views/MainWindowView.swift" : {
+    "index-unit-output-path" : "/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/MainWindowView.o",
+    "llvm-bc" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/MainWindowView.bc",
+    "object" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/MainWindowView.o"
+  },
+  "/Users/gautier/GogoLabs/FeedBacks/FeedBacksApp/Views/SplashView.swift" : {
+    "index-unit-output-path" : "/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/SplashView.o",
+    "llvm-bc" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/SplashView.bc",
+    "object" : "/Users/gautier/GogoLabs/FeedBacks/.derived-release/Build/Intermediates.noindex/FeedBacks.build/Release/FeedBacks.build/Objects-normal/x86_64/SplashView.o"
+  }
+}
