@@ -21,7 +21,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
     func showAboutPanel() {
         let alert = NSAlert()
-        alert.messageText = "FeedBacks"
+        alert.messageText = "FeedBacks!"
         alert.informativeText = "Standalone mix feedback marker importer for Pro Tools."
         alert.runModal()
     }
