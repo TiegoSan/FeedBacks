@@ -44,3 +44,16 @@ targets:
     postBuildScripts:
       - name: Sign Embedded Python
         path: scripts/sign_embedded_python.sh
+schemes:
+  "FeedBacks!":
+    build:
+      targets:
+        "FeedBacks!": all
+    run:
+      config: Debug
+    archive:
+      config: Release
+    profile:
+      config: Release
+    analyze:
+      config: Debug
