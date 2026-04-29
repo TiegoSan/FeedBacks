@@ -36,7 +36,7 @@ targets:
         CODE_SIGN_ENTITLEMENTS: FeedBacksApp/FeedBacks.entitlements
         CODE_SIGN_IDENTITY: Apple Development
         CURRENT_PROJECT_VERSION: 1
-        MARKETING_VERSION: 0.1.0
+        MARKETING_VERSION: 1.0
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         INFOPLIST_KEY_CFBundleName: "FeedBacks!"
         INFOPLIST_KEY_NSPrincipalClass: NSApplication
