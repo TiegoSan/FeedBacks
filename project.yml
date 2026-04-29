@@ -5,7 +5,7 @@ options:
 settings:
   base:
     PRODUCT_NAME: "FeedBacks!"
-    PRODUCT_BUNDLE_IDENTIFIER: com.gogolabs.feedbacks
+    PRODUCT_BUNDLE_IDENTIFIER: fr.gogolabs.feedbacks
     SWIFT_VERSION: 5.10
     DEVELOPMENT_TEAM: 4U78WUV7T6
     GENERATE_INFOPLIST_FILE: YES
