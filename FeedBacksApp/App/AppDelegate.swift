@@ -7,16 +7,43 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
     private var startupSplashPanel: NSPanel?
     private var colorsWindow: NSWindow?
+    private var splashCompletionTask: DispatchWorkItem?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         showStartupSplashPanel()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) { [weak self] in
+            self?.hideMainWindows()
+        }
+        let task = DispatchWorkItem { [weak self] in
+            self?.completeStartupSplash()
+        }
+        splashCompletionTask = task
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.8, execute: task)
     }
 
     func completeStartupSplash() {
         guard !isLaunchSplashCompleted else { return }
+        splashCompletionTask?.cancel()
+        splashCompletionTask = nil
         isLaunchSplashCompleted = true
+        startupSplashPanel?.contentView = nil
         startupSplashPanel?.orderOut(nil)
+        startupSplashPanel?.close()
         startupSplashPanel = nil
+        revealMainWindows()
+    }
+
+    func configureMainWindow(_ window: NSWindow) {
+        window.contentMinSize = NSSize(width: 980, height: 520)
+        window.contentMaxSize = NSSize(width: 1400, height: 560)
+        fitMainWindowToVisibleFrame(window)
+        if isLaunchSplashCompleted {
+            window.alphaValue = 1
+            window.makeKeyAndOrderFront(nil)
+        } else {
+            window.alphaValue = 0
+            window.orderOut(nil)
+        }
     }
 
     func showAboutPanel() {
@@ -95,5 +122,45 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         }
 
         startupSplashPanel = panel
+    }
+
+    private func hideMainWindows() {
+        for window in mainAppWindows {
+            window.alphaValue = 0
+            window.orderOut(nil)
+        }
+    }
+
+    private func revealMainWindows() {
+        let windows = mainAppWindows
+        for window in windows {
+            fitMainWindowToVisibleFrame(window)
+            window.alphaValue = 1
+            window.makeKeyAndOrderFront(nil)
+        }
+        NSApp.activate(ignoringOtherApps: true)
+    }
+
+    private var mainAppWindows: [NSWindow] {
+        NSApp.windows.filter { window in
+            window !== startupSplashPanel && window !== colorsWindow
+        }
+    }
+
+    private func fitMainWindowToVisibleFrame(_ window: NSWindow) {
+        guard let visibleFrame = window.screen?.visibleFrame ?? NSScreen.main?.visibleFrame else { return }
+
+        let horizontalMargin: CGFloat = 80
+        let verticalMargin: CGFloat = 110
+        let targetWidth = min(1160, max(900, visibleFrame.width - horizontalMargin))
+        let targetHeight = min(560, max(500, visibleFrame.height - verticalMargin))
+        let frame = NSRect(
+            x: visibleFrame.midX - (targetWidth / 2),
+            y: visibleFrame.midY - (targetHeight / 2),
+            width: targetWidth,
+            height: targetHeight
+        )
+        window.setContentSize(NSSize(width: targetWidth, height: targetHeight))
+        window.setFrame(frame, display: false)
     }
 }

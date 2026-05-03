@@ -20,10 +20,14 @@ enum FeedbacksStrokeColorKey: String, CaseIterable, Identifiable {
 
     var defaultHex: String {
         switch self {
-        case .cardBorder, .buttonBorder, .rowBorder:
-            return "#A99AB3"
-        case .buttonGlassHighlight:
+        case .cardBorder:
             return "#FFFFFF"
+        case .buttonBorder:
+            return "#FFFFFF"
+        case .buttonGlassHighlight:
+            return "#FF5252"
+        case .rowBorder:
+            return "#A99AB3"
         }
     }
 }
@@ -57,13 +61,13 @@ enum FeedbacksStrokeValueKey: String, CaseIterable, Identifiable {
 
     var defaultValue: Double {
         switch self {
-        case .cardWidth: return 1.0
-        case .cardCornerRadius: return 28.0
+        case .cardWidth: return 1.7
+        case .cardCornerRadius: return 15.0
         case .buttonWidth: return 1.0
-        case .buttonCornerRadius: return 16.0
-        case .buttonGlassShine: return 0.24
-        case .buttonGlassFrost: return 0.08
-        case .buttonGlassShadow: return 0.24
+        case .buttonCornerRadius: return 10.0
+        case .buttonGlassShine: return 0.44
+        case .buttonGlassFrost: return 0.25
+        case .buttonGlassShadow: return 0.35
         case .rowWidth: return 1.0
         case .rowCornerRadius: return 14.0
         }

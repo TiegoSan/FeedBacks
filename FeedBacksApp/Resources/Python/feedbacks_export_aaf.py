@@ -138,7 +138,6 @@ def export_aaf(output_path, payload_path):
                 slot_name="Feedback Markers"
             )
 
-        print(f"✅ AAF created: {output_path}")
         return 0
     except Exception as exc:
         print(f"❌ Erreur export AAF: {exc}")

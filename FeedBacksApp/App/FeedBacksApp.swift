@@ -13,16 +13,12 @@ struct FeedBacksApp: App {
             MainWindowView()
                 .environmentObject(appDelegate)
                 .preferredColorScheme(.dark)
-                .task {
-                    guard !appDelegate.isLaunchSplashCompleted else { return }
-                    try? await Task.sleep(nanoseconds: 1_800_000_000)
-                    await MainActor.run {
-                        appDelegate.completeStartupSplash()
-                    }
-                }
+                .background(WindowAccessor { window in
+                    appDelegate.configureMainWindow(window)
+                })
         }
-        .defaultSize(width: 1160, height: 760)
-        .windowResizability(.contentSize)
+        .defaultSize(width: 1100, height: 560)
+        .windowResizability(.automatic)
         .windowStyle(.hiddenTitleBar)
         .commands {
             CommandGroup(replacing: .appInfo) {
@@ -37,6 +33,28 @@ struct FeedBacksApp: App {
                     appDelegate.showColorsWindow()
                 }
                 .keyboardShortcut("c", modifiers: [.command, .shift])
+            }
+        }
+    }
+}
+
+private struct WindowAccessor: NSViewRepresentable {
+    let onResolve: (NSWindow) -> Void
+
+    func makeNSView(context: Context) -> NSView {
+        let view = NSView()
+        DispatchQueue.main.async {
+            if let window = view.window {
+                onResolve(window)
+            }
+        }
+        return view
+    }
+
+    func updateNSView(_ nsView: NSView, context: Context) {
+        DispatchQueue.main.async {
+            if let window = nsView.window {
+                onResolve(window)
             }
         }
     }

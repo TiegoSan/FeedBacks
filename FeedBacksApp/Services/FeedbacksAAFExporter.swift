@@ -7,7 +7,6 @@ enum FeedbacksAAFExporterError: LocalizedError {
     case missingHelperScript
     case missingBundledPythonHome
     case requestEncodingFailed
-    case responseMissing
     case exportFailed(String)
 
     var errorDescription: String? {
@@ -20,8 +19,6 @@ enum FeedbacksAAFExporterError: LocalizedError {
             return "Embedded Python home is missing from the app bundle."
         case .requestEncodingFailed:
             return "Unable to encode AAF export payload."
-        case .responseMissing:
-            return "AAF export helper returned no output."
         case .exportFailed(let message):
             return message
         }
@@ -94,9 +91,6 @@ enum FeedbacksAAFExporter {
 
         let stdoutText = String(data: stdout.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8) ?? ""
         let stderrText = String(data: stderr.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8) ?? ""
-        let stdoutClean = stdoutText.trimmingCharacters(in: .whitespacesAndNewlines)
-        let stderrClean = stderrText.trimmingCharacters(in: .whitespacesAndNewlines)
-
         guard process.terminationStatus == 0 else {
             throw FeedbacksAAFExporterError.exportFailed(
                 processFailureMessage(
@@ -108,15 +102,9 @@ enum FeedbacksAAFExporter {
             )
         }
 
-        guard !stdoutClean.isEmpty || !stderrClean.isEmpty else {
-            throw FeedbacksAAFExporterError.exportFailed(
-                processFailureMessage(
-                    defaultMessage: FeedbacksAAFExporterError.responseMissing.errorDescription ?? "AAF export helper returned no output.",
-                    process: process,
-                    stdoutText: stdoutText,
-                    stderrText: stderrText
-                )
-            )
+        let stderrClean = stderrText.trimmingCharacters(in: .whitespacesAndNewlines)
+        if !stderrClean.isEmpty {
+            throw FeedbacksAAFExporterError.exportFailed(stderrClean)
         }
     }
 

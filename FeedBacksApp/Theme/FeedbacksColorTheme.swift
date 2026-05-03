@@ -44,8 +44,8 @@ enum FeedbacksColorKey: String, CaseIterable, Identifiable {
 
     var defaultHex: String {
         switch self {
-        case .backgroundTop: return "#151028"
-        case .backgroundBottom: return "#102A43"
+        case .backgroundTop: return "#2D3359"
+        case .backgroundBottom: return "#212640"
         case .card: return "#0D1422"
         case .cardElevated: return "#162033"
         case .accent: return "#1482B5"
@@ -55,11 +55,11 @@ enum FeedbacksColorKey: String, CaseIterable, Identifiable {
         case .textSecondary: return "#D8CAD8"
         case .success: return "#41C98B"
         case .warning: return "#F8D44C"
-        case .buttonImport: return "#D93A63"
-        case .buttonExport: return "#2B8CD2"
-        case .buttonChooseFile: return "#3F74E8"
-        case .buttonClipboard: return "#1F9D8B"
-        case .buttonParse: return "#6E57D8"
+        case .buttonImport: return "#4727D9"
+        case .buttonExport: return "#1E9CF8"
+        case .buttonChooseFile: return "#612E35"
+        case .buttonClipboard: return "#4FD494"
+        case .buttonParse: return "#F8C506"
         }
     }
 
