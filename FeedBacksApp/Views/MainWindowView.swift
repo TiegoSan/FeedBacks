@@ -12,24 +12,27 @@ struct MainWindowView: View {
         let _ = colorTheme.refreshToken
         let _ = strokeTheme.refreshToken
 
-        ZStack {
-            LinearGradient(
-                colors: [FeedbacksTheme.backgroundTop, FeedbacksTheme.backgroundBottom],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .ignoresSafeArea()
+        GeometryReader { geometry in
+            let maxHeight = geometry.size.height
+            ZStack {
+                LinearGradient(
+                    colors: [FeedbacksTheme.backgroundTop, FeedbacksTheme.backgroundBottom],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .ignoresSafeArea()
 
-            VStack(spacing: 14) {
-                header
-                controls
-                reviewPanel
-                footer
+                VStack(spacing: 14) {
+                    header
+                    controls
+                    reviewPanel
+                    footer
+                }
+                .padding(18)
+                .frame(maxWidth: .infinity, maxHeight: maxHeight, alignment: .top)
+                .opacity(appDelegate.isLaunchSplashCompleted ? 1 : 0.001)
+                .animation(.easeOut(duration: 0.35), value: appDelegate.isLaunchSplashCompleted)
             }
-            .padding(18)
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-            .opacity(appDelegate.isLaunchSplashCompleted ? 1 : 0.001)
-            .animation(.easeOut(duration: 0.35), value: appDelegate.isLaunchSplashCompleted)
         }
     }
 
@@ -289,7 +292,7 @@ struct MainWindowView: View {
                 }
             }
         }
-        .frame(maxWidth: .infinity, minHeight: 170, maxHeight: 220, alignment: .topLeading)
+        .frame(maxWidth: .infinity, minHeight: 170, maxHeight: .infinity, alignment: .topLeading)
         .glassCard()
     }
 

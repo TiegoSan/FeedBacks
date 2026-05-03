@@ -34,8 +34,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     }
 
     func configureMainWindow(_ window: NSWindow) {
-        window.contentMinSize = NSSize(width: 980, height: 520)
-        window.contentMaxSize = NSSize(width: 1400, height: 560)
+        window.contentMinSize = NSSize(width: 980, height: 640)
+        window.contentMaxSize = NSSize(width: 1400, height: 900)
         fitMainWindowToVisibleFrame(window)
         if isLaunchSplashCompleted {
             window.alphaValue = 1
@@ -151,9 +151,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         guard let visibleFrame = window.screen?.visibleFrame ?? NSScreen.main?.visibleFrame else { return }
 
         let horizontalMargin: CGFloat = 80
-        let verticalMargin: CGFloat = 110
+        let verticalMargin: CGFloat = 60
         let targetWidth = min(1160, max(900, visibleFrame.width - horizontalMargin))
-        let targetHeight = min(560, max(500, visibleFrame.height - verticalMargin))
+        let targetHeight = min(900, max(640, visibleFrame.height - verticalMargin))
         let frame = NSRect(
             x: visibleFrame.midX - (targetWidth / 2),
             y: visibleFrame.midY - (targetHeight / 2),

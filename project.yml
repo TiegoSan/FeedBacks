@@ -12,6 +12,7 @@ settings:
     INFOPLIST_KEY_CFBundleDisplayName: "FeedBacks!"
     INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.music
     INFOPLIST_KEY_NSHumanReadableCopyright: "Copyright © 2026 GogoLabs"
+    INFOPLIST_KEY_ITSAppUsesNonExemptEncryption: NO
 targets:
   "FeedBacks!":
     type: application
