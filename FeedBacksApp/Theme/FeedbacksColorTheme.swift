@@ -13,6 +13,11 @@ enum FeedbacksColorKey: String, CaseIterable, Identifiable {
     case textSecondary
     case success
     case warning
+    case buttonImport
+    case buttonExport
+    case buttonChooseFile
+    case buttonClipboard
+    case buttonParse
 
     var id: String { rawValue }
 
@@ -29,6 +34,11 @@ enum FeedbacksColorKey: String, CaseIterable, Identifiable {
         case .textSecondary: return "Text Secondary"
         case .success: return "Success"
         case .warning: return "Warning"
+        case .buttonImport: return "Button Import"
+        case .buttonExport: return "Button Export"
+        case .buttonChooseFile: return "Button Choose File"
+        case .buttonClipboard: return "Button Clipboard"
+        case .buttonParse: return "Button Parse"
         }
     }
 
@@ -45,6 +55,11 @@ enum FeedbacksColorKey: String, CaseIterable, Identifiable {
         case .textSecondary: return "#D8CAD8"
         case .success: return "#41C98B"
         case .warning: return "#F8D44C"
+        case .buttonImport: return "#D93A63"
+        case .buttonExport: return "#2B8CD2"
+        case .buttonChooseFile: return "#3F74E8"
+        case .buttonClipboard: return "#1F9D8B"
+        case .buttonParse: return "#6E57D8"
         }
     }
 

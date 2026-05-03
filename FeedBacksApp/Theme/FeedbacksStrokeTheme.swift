@@ -4,6 +4,7 @@ import SwiftUI
 enum FeedbacksStrokeColorKey: String, CaseIterable, Identifiable {
     case cardBorder
     case buttonBorder
+    case buttonGlassHighlight
     case rowBorder
 
     var id: String { rawValue }
@@ -12,6 +13,7 @@ enum FeedbacksStrokeColorKey: String, CaseIterable, Identifiable {
         switch self {
         case .cardBorder: return "Card Border"
         case .buttonBorder: return "Button Border"
+        case .buttonGlassHighlight: return "Glass Highlight"
         case .rowBorder: return "Row Border"
         }
     }
@@ -20,6 +22,8 @@ enum FeedbacksStrokeColorKey: String, CaseIterable, Identifiable {
         switch self {
         case .cardBorder, .buttonBorder, .rowBorder:
             return "#A99AB3"
+        case .buttonGlassHighlight:
+            return "#FFFFFF"
         }
     }
 }
@@ -29,6 +33,9 @@ enum FeedbacksStrokeValueKey: String, CaseIterable, Identifiable {
     case cardCornerRadius
     case buttonWidth
     case buttonCornerRadius
+    case buttonGlassShine
+    case buttonGlassFrost
+    case buttonGlassShadow
     case rowWidth
     case rowCornerRadius
 
@@ -40,6 +47,9 @@ enum FeedbacksStrokeValueKey: String, CaseIterable, Identifiable {
         case .cardCornerRadius: return "Card Radius"
         case .buttonWidth: return "Button Width"
         case .buttonCornerRadius: return "Button Radius"
+        case .buttonGlassShine: return "Glass Shine"
+        case .buttonGlassFrost: return "Glass Frost"
+        case .buttonGlassShadow: return "Glass Shadow"
         case .rowWidth: return "Row Width"
         case .rowCornerRadius: return "Row Radius"
         }
@@ -51,6 +61,9 @@ enum FeedbacksStrokeValueKey: String, CaseIterable, Identifiable {
         case .cardCornerRadius: return 28.0
         case .buttonWidth: return 1.0
         case .buttonCornerRadius: return 16.0
+        case .buttonGlassShine: return 0.24
+        case .buttonGlassFrost: return 0.08
+        case .buttonGlassShadow: return 0.24
         case .rowWidth: return 1.0
         case .rowCornerRadius: return 14.0
         }
@@ -64,6 +77,12 @@ enum FeedbacksStrokeValueKey: String, CaseIterable, Identifiable {
             return 6.0...40.0
         case .buttonCornerRadius:
             return 4.0...30.0
+        case .buttonGlassShine:
+            return 0.0...0.5
+        case .buttonGlassFrost:
+            return 0.0...0.25
+        case .buttonGlassShadow:
+            return 0.0...0.5
         case .rowCornerRadius:
             return 4.0...24.0
         }
@@ -73,6 +92,8 @@ enum FeedbacksStrokeValueKey: String, CaseIterable, Identifiable {
         switch self {
         case .cardWidth, .buttonWidth, .rowWidth:
             return 0.1
+        case .buttonGlassShine, .buttonGlassFrost, .buttonGlassShadow:
+            return 0.01
         case .cardCornerRadius, .buttonCornerRadius, .rowCornerRadius:
             return 1.0
         }

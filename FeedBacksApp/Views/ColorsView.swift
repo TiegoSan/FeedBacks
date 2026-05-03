@@ -17,7 +17,7 @@ private struct StrokeSection: Identifiable {
 struct ColorsView: View {
     @ObservedObject private var colorTheme = FeedbacksColorTheme.shared
     @ObservedObject private var strokeTheme = FeedbacksStrokeTheme.shared
-    @State private var expandedSections: Set<String> = ["window", "borders"]
+    @State private var expandedSections: Set<String> = ["window", "buttons", "button-glass", "borders"]
 
     private let colorSections: [ColorSection] = [
         ColorSection(
@@ -29,6 +29,13 @@ struct ColorsView: View {
                 .accent, .accentSoft, .accentWarm,
                 .textPrimary, .textSecondary,
                 .success, .warning
+            ]
+        ),
+        ColorSection(
+            id: "buttons",
+            title: "Buttons",
+            keys: [
+                .buttonImport, .buttonExport, .buttonChooseFile, .buttonClipboard, .buttonParse
             ]
         )
     ]
@@ -61,6 +68,7 @@ struct ColorsView: View {
                     ForEach(colorSections) { section in
                         colorSectionView(section)
                     }
+                    buttonGlassSectionView
                     bordersSectionView
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -93,6 +101,12 @@ struct ColorsView: View {
                     FeedbacksStrokeEditorRow(section: section)
                 }
             }
+        }
+    }
+
+    private var buttonGlassSectionView: some View {
+        collapsibleContainer(id: "button-glass", title: "Button Glass") {
+            FeedbacksButtonGlassEditorRow()
         }
     }
 
@@ -138,6 +152,130 @@ struct ColorsView: View {
         } else {
             expandedSections.insert(id)
         }
+    }
+}
+
+private struct FeedbacksButtonGlassEditorRow: View {
+    @ObservedObject private var theme = FeedbacksStrokeTheme.shared
+
+    @State private var hue: Double = 0
+    @State private var saturation: Double = 0
+    @State private var brightness: Double = 0
+    @State private var hexText: String = ""
+    @State private var isExpanded = true
+    @State private var isUpdatingFromBinding = false
+
+    private var colorSelection: Binding<Color> {
+        theme.colorBinding(for: .buttonGlassHighlight)
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 12) {
+                Text("Liquid Glass")
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundStyle(FeedbacksTheme.textPrimary)
+                    .frame(minWidth: 180, maxWidth: .infinity, alignment: .leading)
+
+                Button {
+                    isExpanded.toggle()
+                } label: {
+                    ColorSwatchPicker(selection: colorSelection)
+                }
+                .buttonStyle(.plain)
+
+                Button {
+                    theme.resetColor(for: .buttonGlassHighlight)
+                    theme.resetValue(for: .buttonGlassShine)
+                    theme.resetValue(for: .buttonGlassFrost)
+                    theme.resetValue(for: .buttonGlassShadow)
+                    syncFromBinding()
+                } label: {
+                    Text("Reset")
+                        .font(.system(size: 12, weight: .semibold))
+                }
+                .buttonStyle(.bordered)
+
+                Button {
+                    isExpanded.toggle()
+                } label: {
+                    Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
+                        .font(.system(size: 11, weight: .semibold))
+                        .foregroundStyle(FeedbacksTheme.textSecondary)
+                        .frame(width: 18, height: 18)
+                }
+                .buttonStyle(.plain)
+            }
+
+            if isExpanded {
+                VStack(alignment: .leading, spacing: 8) {
+                    ColorsSliderRow(label: "Hue", value: $hue, range: 0...1)
+                    ColorsSliderRow(label: "Saturation", value: $saturation, range: 0...1)
+                    ColorsSliderRow(label: "Brightness", value: $brightness, range: 0...1)
+                    StrokeValueRow(key: .buttonGlassShine)
+                    StrokeValueRow(key: .buttonGlassFrost)
+                    StrokeValueRow(key: .buttonGlassShadow)
+
+                    HStack(spacing: 8) {
+                        Text("HEX")
+                            .font(.system(size: 13, weight: .semibold))
+                            .foregroundStyle(FeedbacksTheme.textSecondary)
+                            .frame(width: 34, alignment: .leading)
+
+                        TextField("RRGGBB", text: $hexText)
+                            .textFieldStyle(.roundedBorder)
+                            .font(.system(size: 12, weight: .medium, design: .monospaced))
+                            .controlSize(.small)
+                            .onSubmit(applyHexIfValid)
+                            .onChange(of: hexText) { _, _ in
+                                applyHexIfValid()
+                            }
+                    }
+                }
+                .padding(10)
+                .background(Color.white.opacity(0.06))
+                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                .onChange(of: hue) { _, _ in applyHSBIfNeeded() }
+                .onChange(of: saturation) { _, _ in applyHSBIfNeeded() }
+                .onChange(of: brightness) { _, _ in applyHSBIfNeeded() }
+            }
+        }
+        .padding(12)
+        .background(Color.white.opacity(0.06))
+        .overlay(
+            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                .stroke(FeedbacksTheme.cardBorder, lineWidth: FeedbacksTheme.cardBorderWidth)
+        )
+        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+        .onAppear(perform: syncFromBinding)
+        .onChange(of: colorSelection.wrappedValue) { _, _ in
+            syncFromBinding()
+        }
+    }
+
+    private func syncFromBinding() {
+        guard let components = colorSelection.wrappedValue.hsbComponents else { return }
+        isUpdatingFromBinding = true
+        hue = components.h
+        saturation = components.s
+        brightness = components.b
+        hexText = colorSelection.wrappedValue.hexRGB ?? ""
+        isUpdatingFromBinding = false
+    }
+
+    private func applyHSBIfNeeded() {
+        guard !isUpdatingFromBinding else { return }
+        colorSelection.wrappedValue = Color(hue: hue, saturation: saturation, brightness: brightness)
+    }
+
+    private func applyHexIfValid() {
+        let cleaned = hexText
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .replacingOccurrences(of: "#", with: "")
+            .uppercased()
+        guard cleaned.count == 6 else { return }
+        guard cleaned.unicodeScalars.allSatisfy({ CharacterSet(charactersIn: "0123456789ABCDEF").contains($0) }) else { return }
+        colorSelection.wrappedValue = Color(hex: cleaned)
     }
 }
 

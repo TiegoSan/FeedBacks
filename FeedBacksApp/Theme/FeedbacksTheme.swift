@@ -15,12 +15,21 @@ enum FeedbacksTheme {
     static var textSecondary: Color { theme.color(for: .textSecondary) }
     static var success: Color { theme.color(for: .success) }
     static var warning: Color { theme.color(for: .warning) }
+    static var buttonImport: Color { theme.baseColor(for: .buttonImport) }
+    static var buttonExport: Color { theme.baseColor(for: .buttonExport) }
+    static var buttonChooseFile: Color { theme.baseColor(for: .buttonChooseFile) }
+    static var buttonClipboard: Color { theme.baseColor(for: .buttonClipboard) }
+    static var buttonParse: Color { theme.baseColor(for: .buttonParse) }
 
     static var cardBorder: Color { strokeTheme.color(for: .cardBorder) }
     static var buttonBorder: Color { strokeTheme.color(for: .buttonBorder) }
+    static var buttonGlassHighlight: Color { strokeTheme.baseColor(for: .buttonGlassHighlight) }
     static var rowBorder: Color { strokeTheme.color(for: .rowBorder) }
     static var cardBorderWidth: Double { strokeTheme.value(for: .cardWidth) }
     static var buttonBorderWidth: Double { strokeTheme.value(for: .buttonWidth) }
+    static var buttonGlassShine: Double { strokeTheme.value(for: .buttonGlassShine) }
+    static var buttonGlassFrost: Double { strokeTheme.value(for: .buttonGlassFrost) }
+    static var buttonGlassShadow: Double { strokeTheme.value(for: .buttonGlassShadow) }
     static var rowBorderWidth: Double { strokeTheme.value(for: .rowWidth) }
     static var cardCornerRadius: Double { strokeTheme.value(for: .cardCornerRadius) }
     static var buttonCornerRadius: Double { strokeTheme.value(for: .buttonCornerRadius) }

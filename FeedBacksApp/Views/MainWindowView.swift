@@ -61,11 +61,10 @@ struct MainWindowView: View {
                     }
                     Text(vm.isBusy ? "Importing..." : "Import Markers into Pro Tools")
                         .font(.system(size: 14, weight: .bold, design: .rounded))
+                        .multilineTextAlignment(.center)
                 }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 10)
             }
-            .buttonStyle(GlassActionButtonStyle(fill: FeedbacksTheme.accentWarm))
+            .buttonStyle(GlassActionButtonStyle(fill: FeedbacksTheme.buttonImport))
             .disabled(vm.isBusy || vm.rows.filter(\.include).isEmpty)
 
             Button {
@@ -73,10 +72,9 @@ struct MainWindowView: View {
             } label: {
                 Text("Export AAF")
                     .font(.system(size: 14, weight: .bold, design: .rounded))
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 10)
+                    .multilineTextAlignment(.center)
             }
-            .buttonStyle(GlassActionButtonStyle(fill: FeedbacksTheme.accentSoft))
+            .buttonStyle(GlassActionButtonStyle(fill: FeedbacksTheme.buttonExport))
             .disabled(vm.isBusy || vm.rows.filter(\.include).isEmpty)
 
             Button {
@@ -84,30 +82,27 @@ struct MainWindowView: View {
             } label: {
                 Text("Choose File")
                     .font(.system(size: 14, weight: .bold, design: .rounded))
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 10)
+                    .multilineTextAlignment(.center)
             }
-            .buttonStyle(GlassActionButtonStyle(fill: FeedbacksTheme.accent))
+            .buttonStyle(GlassActionButtonStyle(fill: FeedbacksTheme.buttonChooseFile))
 
             Button {
                 vm.pasteFromClipboard()
             } label: {
                 Text("Paste from Clipboard")
                     .font(.system(size: 14, weight: .bold, design: .rounded))
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 10)
+                    .multilineTextAlignment(.center)
             }
-            .buttonStyle(GlassActionButtonStyle(fill: FeedbacksTheme.accent))
+            .buttonStyle(GlassActionButtonStyle(fill: FeedbacksTheme.buttonClipboard))
 
             Button {
                 vm.parseSelectedFile()
             } label: {
                 Text("Parse Feedback File")
                     .font(.system(size: 14, weight: .bold, design: .rounded))
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 10)
+                    .multilineTextAlignment(.center)
             }
-            .buttonStyle(GlassActionButtonStyle(fill: FeedbacksTheme.accentSoft))
+            .buttonStyle(GlassActionButtonStyle(fill: FeedbacksTheme.buttonParse))
         }
     }
 
@@ -163,110 +158,118 @@ struct MainWindowView: View {
 
             if isSetupExpanded {
                 HStack(alignment: .top, spacing: 18) {
-                    VStack(alignment: .leading, spacing: 8) {
-                        labeledValue("Source", value: vm.selectedSourceLabel)
+                    VStack(alignment: .leading, spacing: 12) {
+                        settingsSubcard("Source & Parsing") {
+                            VStack(alignment: .leading, spacing: 10) {
+                                labeledValue("Source", value: vm.selectedSourceLabel)
 
-                        HStack(spacing: 16) {
-                            VStack(alignment: .leading, spacing: 8) {
-                                Text("Default Hour")
-                                    .font(.system(size: 12, weight: .semibold, design: .rounded))
-                                    .foregroundStyle(FeedbacksTheme.textSecondary)
-                                Stepper(value: $vm.defaultHour, in: 0...23) {
-                                    Text(String(format: "%02d", vm.defaultHour))
-                                        .font(.system(size: 15, weight: .bold, design: .monospaced))
-                                        .foregroundStyle(FeedbacksTheme.textPrimary)
-                                }
-                                .onChange(of: vm.defaultHour) { _, _ in
-                                    if vm.selectedFileURL != nil { vm.parseSelectedFile() }
-                                }
-                            }
+                                HStack(spacing: 16) {
+                                    VStack(alignment: .leading, spacing: 8) {
+                                        Text("Default Hour")
+                                            .font(.system(size: 12, weight: .semibold, design: .rounded))
+                                            .foregroundStyle(FeedbacksTheme.textSecondary)
+                                        Stepper(value: $vm.defaultHour, in: 0...23) {
+                                            Text(String(format: "%02d", vm.defaultHour))
+                                                .font(.system(size: 15, weight: .bold, design: .monospaced))
+                                                .foregroundStyle(FeedbacksTheme.textPrimary)
+                                        }
+                                        .onChange(of: vm.defaultHour) { _, _ in
+                                            if vm.selectedFileURL != nil { vm.parseSelectedFile() }
+                                        }
+                                    }
 
-                            VStack(alignment: .leading, spacing: 8) {
-                                Text("Compact 6-digit mode")
-                                    .font(.system(size: 12, weight: .semibold, design: .rounded))
-                                    .foregroundStyle(FeedbacksTheme.textSecondary)
-                                Picker("", selection: $vm.sixDigitMode) {
-                                    ForEach(SixDigitMode.allCases) { mode in
-                                        Text("\(mode.title) (\(mode.subtitle))").tag(mode)
+                                    VStack(alignment: .leading, spacing: 8) {
+                                        Text("Compact 6-digit mode")
+                                            .font(.system(size: 12, weight: .semibold, design: .rounded))
+                                            .foregroundStyle(FeedbacksTheme.textSecondary)
+                                        Picker("", selection: $vm.sixDigitMode) {
+                                            ForEach(SixDigitMode.allCases) { mode in
+                                                Text("\(mode.title) (\(mode.subtitle))").tag(mode)
+                                            }
+                                        }
+                                        .pickerStyle(.segmented)
+                                        .onChange(of: vm.sixDigitMode) { _, _ in
+                                            if vm.selectedFileURL != nil { vm.parseSelectedFile() }
+                                        }
                                     }
                                 }
-                                .pickerStyle(.segmented)
-                                .onChange(of: vm.sixDigitMode) { _, _ in
-                                    if vm.selectedFileURL != nil { vm.parseSelectedFile() }
+
+                                VStack(alignment: .leading, spacing: 6) {
+                                    Text("Example: `123456` -> \(compactSixDigitExample)")
+                                        .font(.system(size: 12, weight: .medium, design: .monospaced))
+                                        .foregroundStyle(FeedbacksTheme.textPrimary)
+                                    Text("This only affects compact 6-digit tokens like `123456`, not segmented values like `12:34:56`.")
+                                        .font(.system(size: 11, weight: .medium, design: .rounded))
+                                        .foregroundStyle(FeedbacksTheme.textSecondary)
                                 }
                             }
-                        }
-
-                        VStack(alignment: .leading, spacing: 6) {
-                            Text("Example: `123456` -> \(compactSixDigitExample)")
-                                .font(.system(size: 12, weight: .medium, design: .monospaced))
-                                .foregroundStyle(FeedbacksTheme.textPrimary)
-                            Text("This only affects compact 6-digit tokens like `123456`, not segmented values like `12:34:56`.")
-                                .font(.system(size: 11, weight: .medium, design: .rounded))
-                                .foregroundStyle(FeedbacksTheme.textSecondary)
                         }
                     }
                     .frame(maxWidth: .infinity, alignment: .topLeading)
 
-                    VStack(alignment: .leading, spacing: 8) {
-                        HStack(alignment: .top, spacing: 16) {
-                            labeledField("Marker Name", text: $vm.markerName)
-                            VStack(alignment: .leading, spacing: 8) {
-                                Text("Ruler Name")
-                                    .font(.system(size: 12, weight: .semibold, design: .rounded))
-                                    .foregroundStyle(FeedbacksTheme.textSecondary)
-                                Picker("", selection: $vm.rulerName) {
-                                    ForEach(["Markers 1", "Markers 2", "Markers 3", "Markers 4", "Markers 5"], id: \.self) { name in
-                                        Text(name).tag(name)
-                                    }
-                                }
-                                .pickerStyle(.menu)
-                            }
-                            .frame(maxWidth: 180, alignment: .leading)
-                            VStack(alignment: .leading, spacing: 8) {
-                                Text("AAF FPS")
-                                    .font(.system(size: 12, weight: .semibold, design: .rounded))
-                                    .foregroundStyle(FeedbacksTheme.textSecondary)
-                                Picker("", selection: $vm.aafFrameRate) {
-                                    ForEach(AAFFrameRatePreset.allCases) { preset in
-                                        Text(preset.title).tag(preset)
-                                    }
-                                }
-                                .pickerStyle(.menu)
-                            }
-                            .frame(maxWidth: 120, alignment: .leading)
-                        }
-
-                        VStack(spacing: 8) {
-                            Text("Color")
-                                .font(.system(size: 12, weight: .semibold, design: .rounded))
-                                .foregroundStyle(FeedbacksTheme.textSecondary)
-                            let colors = FeedbacksTheme.markerColors
-                            HStack(spacing: 16) {
-                                VStack(spacing: 8) {
-                                    HStack(spacing: 8) {
-                                        ForEach(0..<8, id: \.self) { i in
-                                            ColorButton(color: colors[i], isSelected: vm.colorIndex == i + 1) {
-                                                vm.colorIndex = i + 1
-                                            }
-                                        }
-                                    }
-                                    HStack(spacing: 8) {
-                                        ForEach(8..<16, id: \.self) { i in
-                                            ColorButton(color: colors[i], isSelected: vm.colorIndex == i + 1) {
-                                                vm.colorIndex = i + 1
-                                            }
-                                        }
-                                    }
-                                }
-
+                    VStack(alignment: .leading, spacing: 12) {
+                        settingsSubcard("Destination") {
+                            HStack(alignment: .top, spacing: 16) {
+                                labeledField("Marker Name", text: $vm.markerName)
                                 VStack(alignment: .leading, spacing: 8) {
-                                    Text("Selection")
+                                    Text("Ruler Name")
                                         .font(.system(size: 12, weight: .semibold, design: .rounded))
                                         .foregroundStyle(FeedbacksTheme.textSecondary)
-                                    Text("\(vm.rows.filter(\.include).count) row(s) selected")
-                                        .font(.system(size: 14, weight: .bold, design: .rounded))
-                                        .foregroundStyle(FeedbacksTheme.textPrimary)
+                                    Picker("", selection: $vm.rulerName) {
+                                        ForEach(["Markers 1", "Markers 2", "Markers 3", "Markers 4", "Markers 5"], id: \.self) { name in
+                                            Text(name).tag(name)
+                                        }
+                                    }
+                                    .pickerStyle(.menu)
+                                }
+                                .frame(maxWidth: 180, alignment: .leading)
+                                VStack(alignment: .leading, spacing: 8) {
+                                    Text("AAF FPS")
+                                        .font(.system(size: 12, weight: .semibold, design: .rounded))
+                                        .foregroundStyle(FeedbacksTheme.textSecondary)
+                                    Picker("", selection: $vm.aafFrameRate) {
+                                        ForEach(AAFFrameRatePreset.allCases) { preset in
+                                            Text(preset.title).tag(preset)
+                                        }
+                                    }
+                                    .pickerStyle(.menu)
+                                }
+                                .frame(maxWidth: 120, alignment: .leading)
+                            }
+                        }
+
+                        settingsSubcard("Color & Selection") {
+                            VStack(spacing: 8) {
+                                Text("Color")
+                                    .font(.system(size: 12, weight: .semibold, design: .rounded))
+                                    .foregroundStyle(FeedbacksTheme.textSecondary)
+                                let colors = FeedbacksTheme.markerColors
+                                HStack(spacing: 16) {
+                                    VStack(spacing: 8) {
+                                        HStack(spacing: 8) {
+                                            ForEach(0..<8, id: \.self) { i in
+                                                ColorButton(color: colors[i], isSelected: vm.colorIndex == i + 1) {
+                                                    vm.colorIndex = i + 1
+                                                }
+                                            }
+                                        }
+                                        HStack(spacing: 8) {
+                                            ForEach(8..<16, id: \.self) { i in
+                                                ColorButton(color: colors[i], isSelected: vm.colorIndex == i + 1) {
+                                                    vm.colorIndex = i + 1
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    VStack(alignment: .leading, spacing: 8) {
+                                        Text("Selection")
+                                            .font(.system(size: 12, weight: .semibold, design: .rounded))
+                                            .foregroundStyle(FeedbacksTheme.textSecondary)
+                                        Text("\(vm.rows.filter(\.include).count) row(s) selected")
+                                            .font(.system(size: 14, weight: .bold, design: .rounded))
+                                            .foregroundStyle(FeedbacksTheme.textPrimary)
+                                    }
                                 }
                             }
                         }
@@ -396,6 +399,25 @@ struct MainWindowView: View {
         }
     }
 
+    private func settingsSubcard<Content: View>(_ title: String, @ViewBuilder content: () -> Content) -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text(title)
+                .font(.system(size: 13, weight: .bold, design: .rounded))
+                .foregroundStyle(FeedbacksTheme.textPrimary)
+            content()
+        }
+        .frame(maxWidth: .infinity, alignment: .topLeading)
+        .padding(16)
+        .background(
+            RoundedRectangle(cornerRadius: FeedbacksTheme.rowCornerRadius + 2, style: .continuous)
+                .fill(FeedbacksTheme.cardElevated.opacity(0.78))
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: FeedbacksTheme.rowCornerRadius + 2, style: .continuous)
+                .stroke(FeedbacksTheme.rowBorder, lineWidth: max(0.75, FeedbacksTheme.rowBorderWidth))
+        )
+    }
+
     private func cardHeader(title: String, isExpanded: Binding<Bool>) -> some View {
         HStack(spacing: 12) {
             sectionTitle(title)
@@ -431,16 +453,56 @@ private struct GlassActionButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
+            .frame(width: 76)
+            .frame(minHeight: 68)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 8)
             .foregroundStyle(.white.opacity(configuration.isPressed ? 0.85 : 0.98))
             .background(
-                RoundedRectangle(cornerRadius: FeedbacksTheme.buttonCornerRadius, style: .continuous)
-                    .fill(fill.opacity(configuration.isPressed ? 0.72 : 0.94))
+                ZStack {
+                    RoundedRectangle(cornerRadius: FeedbacksTheme.buttonCornerRadius + 2, style: .continuous)
+                        .fill(
+                            LinearGradient(
+                                colors: [
+                                    fill.opacity(configuration.isPressed ? 0.56 : 0.82),
+                                    fill.opacity(configuration.isPressed ? 0.68 : 0.62),
+                                    FeedbacksTheme.buttonGlassHighlight.opacity(configuration.isPressed ? 0.08 : FeedbacksTheme.buttonGlassFrost)
+                                ],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+
+                    RoundedRectangle(cornerRadius: FeedbacksTheme.buttonCornerRadius + 2, style: .continuous)
+                        .fill(FeedbacksTheme.buttonGlassHighlight.opacity(configuration.isPressed ? 0.04 : FeedbacksTheme.buttonGlassFrost))
+                        .blur(radius: 0.5)
+
+                    RoundedRectangle(cornerRadius: FeedbacksTheme.buttonCornerRadius + 2, style: .continuous)
+                        .fill(
+                            LinearGradient(
+                                colors: [
+                                    FeedbacksTheme.buttonGlassHighlight.opacity(configuration.isPressed ? 0.10 : FeedbacksTheme.buttonGlassShine),
+                                    FeedbacksTheme.buttonGlassHighlight.opacity(max(0.02, FeedbacksTheme.buttonGlassFrost * 0.5)),
+                                    Color.clear
+                                ],
+                                startPoint: .top,
+                                endPoint: .bottom
+                            )
+                        )
+                }
             )
             .overlay(
-                RoundedRectangle(cornerRadius: FeedbacksTheme.buttonCornerRadius, style: .continuous)
-                    .stroke(FeedbacksTheme.buttonBorder, lineWidth: FeedbacksTheme.buttonBorderWidth)
+                RoundedRectangle(cornerRadius: FeedbacksTheme.buttonCornerRadius + 2, style: .continuous)
+                    .stroke(FeedbacksTheme.buttonGlassHighlight.opacity(configuration.isPressed ? 0.16 : max(0.18, FeedbacksTheme.buttonGlassShine)), lineWidth: 1)
             )
-            .scaleEffect(configuration.isPressed ? 0.99 : 1)
+            .overlay(
+                RoundedRectangle(cornerRadius: FeedbacksTheme.buttonCornerRadius - 1, style: .continuous)
+                    .stroke(fill.opacity(configuration.isPressed ? 0.34 : 0.58), lineWidth: max(0.8, FeedbacksTheme.buttonBorderWidth))
+                    .padding(1)
+            )
+            .shadow(color: fill.opacity(configuration.isPressed ? 0.10 : FeedbacksTheme.buttonGlassShadow), radius: 16, x: 0, y: 8)
+            .shadow(color: Color.black.opacity(configuration.isPressed ? 0.10 : max(0.08, FeedbacksTheme.buttonGlassShadow * 0.75)), radius: 10, x: 0, y: 4)
+            .scaleEffect(configuration.isPressed ? 0.985 : 1)
     }
 }
 

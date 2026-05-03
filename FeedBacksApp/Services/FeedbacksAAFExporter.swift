@@ -3,22 +3,25 @@ import Foundation
 import UniformTypeIdentifiers
 
 enum FeedbacksAAFExporterError: LocalizedError {
-    case missingPython3
+    case missingPythonHelper
     case missingHelperScript
     case missingBundledPythonHome
     case requestEncodingFailed
+    case responseMissing
     case exportFailed(String)
 
     var errorDescription: String? {
         switch self {
-        case .missingPython3:
-            return "Embedded Python runtime not found in app bundle."
+        case .missingPythonHelper:
+            return "Embedded Python helper not found in app bundle."
         case .missingHelperScript:
             return "Embedded AAF export helper is missing from the app bundle."
         case .missingBundledPythonHome:
             return "Embedded Python home is missing from the app bundle."
         case .requestEncodingFailed:
             return "Unable to encode AAF export payload."
+        case .responseMissing:
+            return "AAF export helper returned no output."
         case .exportFailed(let message):
             return message
         }
@@ -49,8 +52,8 @@ enum FeedbacksAAFExporter {
     }
 
     static func exportAAF(_ request: FeedbackAAFRequest, to outputURL: URL) throws {
-        guard let pythonURL = pythonExecutableURL() else {
-            throw FeedbacksAAFExporterError.missingPython3
+        guard let helperURL = pythonExecutableURL() else {
+            throw FeedbacksAAFExporterError.missingPythonHelper
         }
 
         let scriptURL = Bundle.main.url(forResource: "feedbacks_export_aaf", withExtension: "py", subdirectory: "Python")
@@ -70,7 +73,7 @@ enum FeedbacksAAFExporter {
         defer { try? FileManager.default.removeItem(at: requestFile) }
 
         let process = Process()
-        process.executableURL = pythonURL
+        process.executableURL = helperURL
         process.arguments = [scriptURL.path, outputURL.path, requestFile.path]
         process.environment = pythonEnvironment(pythonHome: pythonHome, pythonRoot: pythonRoot)
 
@@ -91,12 +94,29 @@ enum FeedbacksAAFExporter {
 
         let stdoutText = String(data: stdout.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8) ?? ""
         let stderrText = String(data: stderr.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8) ?? ""
+        let stdoutClean = stdoutText.trimmingCharacters(in: .whitespacesAndNewlines)
+        let stderrClean = stderrText.trimmingCharacters(in: .whitespacesAndNewlines)
 
         guard process.terminationStatus == 0 else {
-            let message = [stderrText, stdoutText]
-                .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-                .first { !$0.isEmpty } ?? "AAF export failed."
-            throw FeedbacksAAFExporterError.exportFailed(message)
+            throw FeedbacksAAFExporterError.exportFailed(
+                processFailureMessage(
+                    defaultMessage: "AAF export failed.",
+                    process: process,
+                    stdoutText: stdoutText,
+                    stderrText: stderrText
+                )
+            )
+        }
+
+        guard !stdoutClean.isEmpty || !stderrClean.isEmpty else {
+            throw FeedbacksAAFExporterError.exportFailed(
+                processFailureMessage(
+                    defaultMessage: FeedbacksAAFExporterError.responseMissing.errorDescription ?? "AAF export helper returned no output.",
+                    process: process,
+                    stdoutText: stdoutText,
+                    stderrText: stderrText
+                )
+            )
         }
     }
 
@@ -121,27 +141,19 @@ enum FeedbacksAAFExporter {
     }
 
     private static func pythonExecutableURL() -> URL? {
-        guard let bundled = bundledPythonHome() else {
-            return nil
-        }
+        let fileManager = FileManager.default
+        let candidates = [
+            Bundle.main.executableURL?
+                .deletingLastPathComponent()
+                .appendingPathComponent("FeedBacksPythonHelper"),
+            Bundle.main.bundleURL
+                .appendingPathComponent("Contents/MacOS/FeedBacksPythonHelper")
+        ]
 
-        if let python = Bundle.main.url(forResource: "python3", withExtension: nil, subdirectory: "\(bundled.subdir)/bin"),
-           FileManager.default.isExecutableFile(atPath: python.path) {
-            return python
-        }
-
-        if let shim = Bundle.main.url(
-            forResource: "Python",
-            withExtension: nil,
-            subdirectory: "\(bundled.subdir)/lib/Resources/Python.app/Contents/MacOS"
-        ),
-           FileManager.default.isExecutableFile(atPath: shim.path) {
-            return shim
-        }
-
-        if let python310 = Bundle.main.url(forResource: "python3.10", withExtension: nil, subdirectory: "\(bundled.subdir)/bin"),
-           FileManager.default.isExecutableFile(atPath: python310.path) {
-            return python310
+        for candidate in candidates.compactMap({ $0 }) {
+            if fileManager.isExecutableFile(atPath: candidate.path) {
+                return candidate
+            }
         }
 
         return nil
@@ -159,5 +171,33 @@ enum FeedbacksAAFExporter {
         env["PYTHONNOUSERSITE"] = "1"
         env["PYTHONDONTWRITEBYTECODE"] = "1"
         return env
+    }
+
+    private static func processFailureMessage(
+        defaultMessage: String,
+        process: Process,
+        stdoutText: String,
+        stderrText: String
+    ) -> String {
+        let stderrClean = stderrText.trimmingCharacters(in: .whitespacesAndNewlines)
+        let stdoutClean = stdoutText.trimmingCharacters(in: .whitespacesAndNewlines)
+        if !stderrClean.isEmpty {
+            return stderrClean
+        }
+        if !stdoutClean.isEmpty {
+            return stdoutClean
+        }
+
+        let reason: String
+        switch process.terminationReason {
+        case .exit:
+            reason = "exit"
+        case .uncaughtSignal:
+            reason = "signal"
+        @unknown default:
+            reason = "unknown"
+        }
+
+        return "\(defaultMessage) Process terminated with \(reason) status \(process.terminationStatus)."
     }
 }

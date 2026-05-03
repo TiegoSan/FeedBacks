@@ -1,7 +1,7 @@
 import Foundation
 
 enum FeedbacksImporterError: LocalizedError {
-    case missingPython3
+    case missingPythonHelper
     case missingHelperScript
     case missingBundledPythonHome
     case requestEncodingFailed
@@ -11,8 +11,8 @@ enum FeedbacksImporterError: LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .missingPython3:
-            return "Embedded Python runtime not found in app bundle."
+        case .missingPythonHelper:
+            return "Embedded Python helper not found in app bundle."
         case .missingHelperScript:
             return "Embedded import helper is missing from the app bundle."
         case .missingBundledPythonHome:
@@ -31,8 +31,8 @@ enum FeedbacksImporterError: LocalizedError {
 
 enum FeedbacksImporter {
     static func runImport(_ request: FeedbackImportRequest) throws -> FeedbackImportResponse {
-        guard let pythonURL = pythonExecutableURL() else {
-            throw FeedbacksImporterError.missingPython3
+        guard let helperURL = pythonExecutableURL() else {
+            throw FeedbacksImporterError.missingPythonHelper
         }
 
         let scriptURL = Bundle.main.url(forResource: "feedbacks_import", withExtension: "py", subdirectory: "Python")
@@ -52,7 +52,7 @@ enum FeedbacksImporter {
         defer { try? FileManager.default.removeItem(at: requestFile) }
 
         let process = Process()
-        process.executableURL = pythonURL
+        process.executableURL = helperURL
         process.arguments = [scriptURL.path, requestFile.path]
         process.environment = pythonEnvironment(pythonHome: pythonHome, pythonRoot: pythonRoot)
 
@@ -68,10 +68,14 @@ enum FeedbacksImporter {
         let lines = stdoutText.split(separator: "\n").map(String.init).filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
 
         guard let jsonLine = lines.last else {
-            if !stderrText.isEmpty {
-                throw FeedbacksImporterError.importFailed(stderrText.trimmingCharacters(in: .whitespacesAndNewlines))
-            }
-            throw FeedbacksImporterError.responseMissing
+            throw FeedbacksImporterError.importFailed(
+                processFailureMessage(
+                    defaultMessage: FeedbacksImporterError.responseMissing.errorDescription ?? "Import helper returned no JSON payload.",
+                    process: process,
+                    stdoutText: stdoutText,
+                    stderrText: stderrText
+                )
+            )
         }
 
         do {
@@ -108,27 +112,19 @@ enum FeedbacksImporter {
     }
 
     private static func pythonExecutableURL() -> URL? {
-        guard let bundled = bundledPythonHome() else {
-            return nil
-        }
+        let fileManager = FileManager.default
+        let candidates = [
+            Bundle.main.executableURL?
+                .deletingLastPathComponent()
+                .appendingPathComponent("FeedBacksPythonHelper"),
+            Bundle.main.bundleURL
+                .appendingPathComponent("Contents/MacOS/FeedBacksPythonHelper")
+        ]
 
-        if let python = Bundle.main.url(forResource: "python3", withExtension: nil, subdirectory: "\(bundled.subdir)/bin"),
-           FileManager.default.isExecutableFile(atPath: python.path) {
-            return python
-        }
-
-        if let shim = Bundle.main.url(
-            forResource: "Python",
-            withExtension: nil,
-            subdirectory: "\(bundled.subdir)/lib/Resources/Python.app/Contents/MacOS"
-        ),
-           FileManager.default.isExecutableFile(atPath: shim.path) {
-            return shim
-        }
-
-        if let python310 = Bundle.main.url(forResource: "python3.10", withExtension: nil, subdirectory: "\(bundled.subdir)/bin"),
-           FileManager.default.isExecutableFile(atPath: python310.path) {
-            return python310
+        for candidate in candidates.compactMap({ $0 }) {
+            if fileManager.isExecutableFile(atPath: candidate.path) {
+                return candidate
+            }
         }
 
         return nil
@@ -146,5 +142,33 @@ enum FeedbacksImporter {
         env["PYTHONNOUSERSITE"] = "1"
         env["PYTHONDONTWRITEBYTECODE"] = "1"
         return env
+    }
+
+    private static func processFailureMessage(
+        defaultMessage: String,
+        process: Process,
+        stdoutText: String,
+        stderrText: String
+    ) -> String {
+        let stderrClean = stderrText.trimmingCharacters(in: .whitespacesAndNewlines)
+        let stdoutClean = stdoutText.trimmingCharacters(in: .whitespacesAndNewlines)
+        if !stderrClean.isEmpty {
+            return stderrClean
+        }
+        if !stdoutClean.isEmpty {
+            return stdoutClean
+        }
+
+        let reason: String
+        switch process.terminationReason {
+        case .exit:
+            reason = "exit"
+        case .uncaughtSignal:
+            reason = "signal"
+        @unknown default:
+            reason = "unknown"
+        }
+
+        return "\(defaultMessage) Process terminated with \(reason) status \(process.terminationStatus)."
     }
 }
